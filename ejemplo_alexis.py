@@ -123,7 +123,10 @@ class PantaJuego(tk.Frame):
             command=quit)
         boton10.place(x=600,y=400, anchor="w",width=50)
 
-        incognita = tk.Label(self,text = self.carga_txt(), font=LETRA_NOR)
+        self.carga_txt()
+        self.incognita_guiones()
+
+        incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
         incognita.place(x=200,y=400)
 
     def carga_txt(self):
@@ -134,7 +137,10 @@ class PantaJuego(tk.Frame):
         self.palabra = listPalabras[i]
         return self.palabra
 
-
+    def incognita_guiones(self):
+        longpalabra = len(self.palabra)
+        self.palabra = '_ '*(longpalabra-1)
+        return self.palabra
 
 
     def letra_bot(self):
