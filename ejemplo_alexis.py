@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 
 LETRA_GRA=("Verdana",113)
-
+LETRA_GRA2=("Verdana",30)
+LETRA_NOR=("Verdana",20)
 
 
 class Ahorcado(tk.Tk):
@@ -23,7 +24,7 @@ class Ahorcado(tk.Tk):
         for F in (MenuJuego, PantaJuego):
             frame = F(contenedor,self)
             self.frames[F] = frame
-            frame.grid(row=0 , column=0 , sticky="NSEW")
+            frame.grid(row=0 , column=0 , sticky="nsew")
         
         self.mostrar_frame(MenuJuego)
 
@@ -56,19 +57,87 @@ class MenuJuego(tk.Frame):
         boton4.pack(ipadx=50,ipady=10,pady=5)
 
 class PantaJuego(tk.Frame):
+    
+    text_bot=0
+    list_word=list()
+    abc=('a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z')
+
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
-        label = ttk.Label(self, text="Ahorcado" , font=LETRA_GRA)
-        label.pack(pady=30,padx=30)
+        
+        label = ttk.Label(self, text="Ahorcado" , font=LETRA_GRA2)
+        label.place(relx=0.5,y=50,anchor="center")
+        
+        label = ttk.Label(self, text="Tabla de letras" , font=LETRA_NOR)
+        label.place(x=550,y=100, anchor="w")
 
-        boton5= ttk.Button(self , text="Volver" ,
-            command=lambda: controlador.mostrar_frame(MenuJuego))
-        boton5.pack()
+        self.letra_bot()
+        boton1= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton1.place(x=550,y=200, anchor="w",width=50)
+        
+        self.letra_bot()
+        boton2= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton2.place(x=600,y=200, anchor="w",width=50)
+        
+        self.letra_bot()
+        boton3= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton3.place(x=550,y=250, anchor="w",width=50)
+        
+        self.letra_bot()
+        boton4= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton4.place(x=600,y=250, anchor="w",width=50)
+
+        self.letra_bot()
+        boton5= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton5.place(x=550,y=300, anchor="w",width=50)
+        
+        self.letra_bot()
+        boton6= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton6.place(x=600,y=300, anchor="w",width=50)
+        
+        self.letra_bot()
+        boton7= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton7.place(x=550,y=350, anchor="w",width=50)
+        
+        self.letra_bot()
+        boton8= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton8.place(x=600,y=350, anchor="w",width=50)
+
+        self.letra_bot()
+        boton9= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton9.place(x=550,y=400, anchor="w",width=50)
+        
+        self.letra_bot()
+        boton10= ttk.Button(self , text=self.text_bot ,
+            command=quit)
+        boton10.place(x=600,y=400, anchor="w",width=50)
+
+    def carga_txt(self):
+        pass
+
+    def letra_bot(self):
+        from random import randint
+        
+        index=randint(0,26)
+        self.text_bot=self.abc[index]
+        return self.text_bot
+
 
 
 
 app=Ahorcado()
 app.geometry("800x600")
+
+
 app.mainloop()
 
 
