@@ -1,3 +1,4 @@
+from random import randint
 import tkinter as tk
 from tkinter import ttk
 
@@ -61,6 +62,7 @@ class PantaJuego(tk.Frame):
     text_bot=0
     list_word=list()
     abc=('a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z')
+    palabra = ''
 
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
@@ -121,12 +123,22 @@ class PantaJuego(tk.Frame):
             command=quit)
         boton10.place(x=600,y=400, anchor="w",width=50)
 
+        incognita = tk.Label(self,text = self.carga_txt(), font=LETRA_NOR)
+        incognita.place(x=200,y=400)
+
     def carga_txt(self):
-        pass
+        palabras = open('ahorcado_5.txt','r')
+        listPalabras = palabras.readlines()
+        palabras.close()
+        i = randint(0,600)
+        self.palabra = listPalabras[i]
+        return self.palabra
+
+
+
 
     def letra_bot(self):
-        from random import randint
-        
+
         index=randint(0,26)
         self.text_bot=self.abc[index]
         return self.text_bot
@@ -223,3 +235,4 @@ app.mainloop()
 
 # pygame.quit()
 # quit()
+
