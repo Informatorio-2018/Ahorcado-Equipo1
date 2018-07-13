@@ -63,6 +63,7 @@ class PantaJuego(tk.Frame):
     list_word=list()
     abc=('a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z')
     palabra = ''
+    palabra_sg=""
 
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
@@ -75,52 +76,52 @@ class PantaJuego(tk.Frame):
 
         self.letra_bot()
         boton1= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton1.place(x=550,y=200, anchor="w",width=50)
         
         self.letra_bot()
         boton2= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton2.place(x=600,y=200, anchor="w",width=50)
         
         self.letra_bot()
         boton3= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton3.place(x=550,y=250, anchor="w",width=50)
         
         self.letra_bot()
         boton4= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton4.place(x=600,y=250, anchor="w",width=50)
 
         self.letra_bot()
         boton5= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton5.place(x=550,y=300, anchor="w",width=50)
         
         self.letra_bot()
         boton6= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton6.place(x=600,y=300, anchor="w",width=50)
         
         self.letra_bot()
         boton7= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton7.place(x=550,y=350, anchor="w",width=50)
         
         self.letra_bot()
         boton8= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton8.place(x=600,y=350, anchor="w",width=50)
 
         self.letra_bot()
         boton9= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton9.place(x=550,y=400, anchor="w",width=50)
         
         self.letra_bot()
         boton10= ttk.Button(self , text=self.text_bot ,
-            command=quit)
+            command=lambda:self.letra_Incognita())
         boton10.place(x=600,y=400, anchor="w",width=50)
 
         self.carga_txt()
@@ -134,11 +135,11 @@ class PantaJuego(tk.Frame):
         listPalabras = palabras.readlines()
         palabras.close()
         i = randint(0,600)
-        self.palabra = listPalabras[i]
-        return self.palabra
+        self.palabra_sg = listPalabras[i]
+        return self.palabra_sg
 
     def incognita_guiones(self):
-        longpalabra = len(self.palabra)
+        longpalabra = len(self.palabra_sg)
         self.palabra = '_ '*(longpalabra-1)
         return self.palabra
 
@@ -149,12 +150,16 @@ class PantaJuego(tk.Frame):
         self.text_bot=self.abc[index]
         return self.text_bot
 
+    def letra_Incognita(self):
+        print(self.text_bot)
+        if self.text_bot in self.palabra_sg:
+            print("esta")
 
 
 
 app=Ahorcado()
 app.geometry("800x600")
-
+app.resizable(False, False)
 
 app.mainloop()
 
