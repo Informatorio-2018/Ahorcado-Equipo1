@@ -1,4 +1,5 @@
 from random import randint
+from random import shuffle
 import tkinter as tk
 from tkinter import ttk
 
@@ -60,69 +61,74 @@ class MenuJuego(tk.Frame):
 class PantaJuego(tk.Frame):
     
     text_bot=0
-    list_word=list()
-    abc=('a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z')
+    list_word={}
+    abc=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z']
     palabra = ''
     palabra_sg=""
-
+    palabra_list=[]
+    
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         
         label = ttk.Label(self, text="Ahorcado" , font=LETRA_GRA2)
         label.place(relx=0.5,y=50,anchor="center")
         
+        # BOTONES
+        #################################################################
         label = ttk.Label(self, text="Tabla de letras" , font=LETRA_NOR)
         label.place(x=550,y=100, anchor="w")
+        
+        self.letra_bot(1)
+        self.boton1= tk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(1))
+        self.boton1.place(x=550,y=200, anchor="w",width=50)
 
-        self.letra_bot()
-        boton1= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton1.place(x=550,y=200, anchor="w",width=50)
+        self.letra_bot(2)
+        self.boton2= tk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(2))
+        self.boton2.place(x=600,y=200, anchor="w",width=50)
         
-        self.letra_bot()
-        boton2= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton2.place(x=600,y=200, anchor="w",width=50)
+        self.letra_bot(3)
+        self.boton3= tk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(3))
+        self.boton3.place(x=550,y=250, anchor="w",width=50)
         
-        self.letra_bot()
-        boton3= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton3.place(x=550,y=250, anchor="w",width=50)
-        
-        self.letra_bot()
-        boton4= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton4.place(x=600,y=250, anchor="w",width=50)
+        self.letra_bot(4)
+        self.boton4= ttk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(4))
+        self.boton4.place(x=600,y=250, anchor="w",width=50)
 
-        self.letra_bot()
-        boton5= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton5.place(x=550,y=300, anchor="w",width=50)
+        self.letra_bot(5)
+        self.boton5= ttk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(5))
+        self.boton5.place(x=550,y=300, anchor="w",width=50)
         
-        self.letra_bot()
-        boton6= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton6.place(x=600,y=300, anchor="w",width=50)
+        self.letra_bot(6)
+        self.boton6= ttk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(6))
+        self.boton6.place(x=600,y=300, anchor="w",width=50)
         
-        self.letra_bot()
-        boton7= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton7.place(x=550,y=350, anchor="w",width=50)
+        self.letra_bot(7)
+        self.boton7= ttk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(7))
+        self.boton7.place(x=550,y=350, anchor="w",width=50)
         
-        self.letra_bot()
-        boton8= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton8.place(x=600,y=350, anchor="w",width=50)
+        self.letra_bot(8)
+        self.boton8= ttk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(8))
+        self.boton8.place(x=600,y=350, anchor="w",width=50)
 
-        self.letra_bot()
-        boton9= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton9.place(x=550,y=400, anchor="w",width=50)
+        self.letra_bot(9)
+        self.boton9= ttk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(9))
+        self.boton9.place(x=550,y=400, anchor="w",width=50)
         
-        self.letra_bot()
-        boton10= ttk.Button(self , text=self.text_bot ,
-            command=lambda:self.letra_Incognita())
-        boton10.place(x=600,y=400, anchor="w",width=50)
+        self.letra_bot(10)
+        self.boton10= ttk.Button(self , text=self.text_bot ,
+            command=lambda: self.letra_Incognita(10))
+        self.boton10.place(x=600,y=400, anchor="w",width=50)
+
+        #############################################################3
 
         self.carga_txt()
         self.incognita_guiones()
@@ -130,120 +136,47 @@ class PantaJuego(tk.Frame):
         incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
         incognita.place(x=200,y=400)
 
+    
     def carga_txt(self):
         palabras = open('ahorcado_5.txt','r')
         listPalabras = palabras.readlines()
         palabras.close()
         i = randint(0,600)
         self.palabra_sg = listPalabras[i]
+        join = ",".join(self.palabra_sg)
+        self.palabra_list = join.split(",")
         return self.palabra_sg
 
+    
     def incognita_guiones(self):
         longpalabra = len(self.palabra_sg)
         self.palabra = '_ '*(longpalabra-1)
         return self.palabra
 
+    # a es igual al numero del boton
+    # shuffle ordena la lista radom y pop saca un valor asi no se repiten
+    # y los guarda en un dicccioario
+    def letra_bot(self,a):
+        shuffle(self.abc)
+        self.text_bot= self.abc.pop()
+        # index=randint(0,26)
+        # self.text_bot=self.abc[index]
+        self.list_word[a]=self.text_bot
 
-    def letra_bot(self):
-
-        index=randint(0,26)
-        self.text_bot=self.abc[index]
-        return self.text_bot
-
-    def letra_Incognita(self):
-        print(self.text_bot)
-        if self.text_bot in self.palabra_sg:
-            print("esta")
-
-
+    # cambia el color del boton si esta e la incognita
+    # nota nose como cambiar para q cambie la variable del boton
+    # con en argumento q pide la funcion
+    def letra_Incognita(self,a):
+        print(self.palabra_sg)
+        if self.list_word[a] in self.palabra_list:
+            self.boton1.configure(bg="green")
+            self.boton1.config(state="disable")
+        else:
+            self.boton1.configure(bg="red")
+            self.boton1.config(state="disable")
 
 app=Ahorcado()
 app.geometry("800x600")
 app.resizable(False, False)
 
 app.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# import pygame
-
-# pygame.init()
-
-
-# display_width = 800
-# display_height = 600
-# black = (0,0,0)
-# white = (255,255,255)
-# red = (200,0,0)
-# green = (0,200,0)
-
-# gameDisplay = pygame.display.set_mode((display_width,display_height))
-# pygame.display.set_caption('SuperMegaEquipo')
-# clock = pygame.time.Clock()
-# gameDisplay.fill(white)
-
-# def text_objects(text, font):
-#     textSurface = font.render(text, True, black)
-#     return textSurface, textSurface.get_rect()
-
-# def game_intro():
-
-#     intro = True
-
-#     while intro:
-#         for event in pygame.event.get():
-#             print(event)
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 quit()
-                
-#         gameDisplay.fill(white)
-#         largeText = pygame.font.SysFont("comicsansms",90)
-#         TextSurf, TextRect = text_objects("Ahorcado", largeText)
-#         TextRect.center = ((display_width/2),(display_height/10))
-#         gameDisplay.blit(TextSurf, TextRect)
-
-
-
-#         pygame.draw.rect(gameDisplay, green,((display_width/4),(display_height/3),400,50))
-#         pygame.draw.rect(gameDisplay, green,((display_width/4),(display_height/3+100),400,50))
-#         pygame.draw.rect(gameDisplay, green,((display_width/4),(display_height/3+200),400,50))
-#         pygame.draw.rect(gameDisplay, green,((display_width/4),(display_height/3+300),400,50))
-
-
-#         pygame.display.update()
-#         clock.tick(15)
-# game_intro()
-
-# pygame.quit()
-# quit()
-
