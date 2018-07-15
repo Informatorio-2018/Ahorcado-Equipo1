@@ -22,14 +22,16 @@ class Ahorcado(tk.Tk):
         contenedor.grid_columnconfigure(0, weight = 1)
 
         self.frames= {}
-
+        #Poener aqui el nombre de la clase de para cambiar de pantalla
+        #############################################################
         for F in (MenuJuego, PantaJuego):
             frame = F(contenedor,self)
             self.frames[F] = frame
             frame.grid(row=0 , column=0 , sticky="nsew")
         
         self.mostrar_frame(MenuJuego)
-
+        ###############################################################
+        
     def mostrar_frame(self, cont):
 
         frame=self.frames[cont]
@@ -66,7 +68,7 @@ class PantaJuego(tk.Frame):
     palabra = ''
     palabra_sg=""
     palabra_list=[]
-    
+    boton_dic=["boton1","boton2","boton3","boton4","boton5","boton6","boton7","boton8","boton9","boton10"]
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         
@@ -94,39 +96,44 @@ class PantaJuego(tk.Frame):
         self.boton3.place(x=550,y=250, anchor="w",width=50)
         
         self.letra_bot(4)
-        self.boton4= ttk.Button(self , text=self.text_bot ,
+        self.boton4= tk.Button(self , text=self.text_bot ,
             command=lambda: self.letra_Incognita(4))
         self.boton4.place(x=600,y=250, anchor="w",width=50)
 
         self.letra_bot(5)
-        self.boton5= ttk.Button(self , text=self.text_bot ,
+        self.boton5= tk.Button(self , text=self.text_bot ,
             command=lambda: self.letra_Incognita(5))
         self.boton5.place(x=550,y=300, anchor="w",width=50)
         
         self.letra_bot(6)
-        self.boton6= ttk.Button(self , text=self.text_bot ,
+        self.boton6= tk.Button(self , text=self.text_bot ,
             command=lambda: self.letra_Incognita(6))
         self.boton6.place(x=600,y=300, anchor="w",width=50)
         
         self.letra_bot(7)
-        self.boton7= ttk.Button(self , text=self.text_bot ,
+        self.boton7= tk.Button(self , text=self.text_bot ,
             command=lambda: self.letra_Incognita(7))
         self.boton7.place(x=550,y=350, anchor="w",width=50)
         
         self.letra_bot(8)
-        self.boton8= ttk.Button(self , text=self.text_bot ,
+        self.boton8= tk.Button(self , text=self.text_bot ,
             command=lambda: self.letra_Incognita(8))
         self.boton8.place(x=600,y=350, anchor="w",width=50)
 
         self.letra_bot(9)
-        self.boton9= ttk.Button(self , text=self.text_bot ,
+        self.boton9= tk.Button(self , text=self.text_bot ,
             command=lambda: self.letra_Incognita(9))
         self.boton9.place(x=550,y=400, anchor="w",width=50)
         
         self.letra_bot(10)
-        self.boton10= ttk.Button(self , text=self.text_bot ,
+        self.boton10= tk.Button(self , text=self.text_bot ,
             command=lambda: self.letra_Incognita(10))
         self.boton10.place(x=600,y=400, anchor="w",width=50)
+
+        b_volver= ttk.Button(self , text="Volver" ,
+            command=lambda: controlador.mostrar_frame(MenuJuego))
+        b_volver.pack(ipadx=50,ipady=10,pady=5)
+        b_volver.place(x=400,y=550,anchor="s")
 
         #############################################################3
 
@@ -143,8 +150,13 @@ class PantaJuego(tk.Frame):
         palabras.close()
         i = randint(0,600)
         self.palabra_sg = listPalabras[i]
-        join = ",".join(self.palabra_sg)
+        strip = self.palabra_sg.strip()
+        join = ",".join(strip)
         self.palabra_list = join.split(",")
+        # cpnt=5
+        # re_order=shuffle(self.palabra_list)
+        # while cpnt!=0:
+
         return self.palabra_sg
 
     
@@ -157,24 +169,29 @@ class PantaJuego(tk.Frame):
     # shuffle ordena la lista radom y pop saca un valor asi no se repiten
     # y los guarda en un dicccioario
     def letra_bot(self,a):
-        shuffle(self.abc)
-        self.text_bot= self.abc.pop()
         # index=randint(0,26)
         # self.text_bot=self.abc[index]
+        shuffle(self.abc)
+        self.text_bot= self.abc.pop()
+
         self.list_word[a]=self.text_bot
 
     # cambia el color del boton si esta e la incognita
     # nota nose como cambiar para q cambie la variable del boton
     # con en argumento q pide la funcion
     def letra_Incognita(self,a):
-        print(self.palabra_sg)
+        print(self.list_word)
+        print(self.palabra_list)
         if self.list_word[a] in self.palabra_list:
-            self.boton1.configure(bg="green")
+            self.boton1.configure(bg="green",fg="snow",relief="flat")
             self.boton1.config(state="disable")
         else:
-            self.boton1.configure(bg="red")
+            self.boton1.configure(bg="red",fg="snow",relief="flat")
             self.boton1.config(state="disable")
 
+    def cant_bot(self,clave_boton):
+        pass
+            
 app=Ahorcado()
 app.geometry("800x600")
 app.resizable(False, False)
