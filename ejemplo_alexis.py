@@ -63,7 +63,7 @@ class MenuJuego(tk.Frame):
 class PantaJuego(tk.Frame):
     
     text_bot=0
-    list_word={}
+    list_word=[]
     abc=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z']
     palabra = ''
     palabra_sg=""
@@ -75,6 +75,7 @@ class PantaJuego(tk.Frame):
         label = ttk.Label(self, text="Ahorcado" , font=LETRA_GRA2)
         label.place(relx=0.5,y=50,anchor="center")
         
+        self.carga_txt()
         # BOTONES
         #################################################################
         label = ttk.Label(self, text="Tabla de letras" , font=LETRA_NOR)
@@ -137,7 +138,6 @@ class PantaJuego(tk.Frame):
 
         #############################################################3
 
-        self.carga_txt()
         self.incognita_guiones()
 
         incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
@@ -153,10 +153,16 @@ class PantaJuego(tk.Frame):
         strip = self.palabra_sg.strip()
         join = ",".join(strip)
         self.palabra_list = join.split(",")
-        # cpnt=5
-        # re_order=shuffle(self.palabra_list)
-        # while cpnt!=0:
-
+        copia_list=self.palabra_list.copy()
+        shuffle(copia_list)
+        self.list_word= copia_list+self.list_word
+        cpt=5
+        shuffle(self.abc)
+        while cpt!=0:
+            cpt-=1
+            saca_abc= self.abc.pop()
+            self.list_word.append(saca_abc)
+        shuffle(self.list_word)
         return self.palabra_sg
 
     
@@ -171,10 +177,7 @@ class PantaJuego(tk.Frame):
     def letra_bot(self,a):
         # index=randint(0,26)
         # self.text_bot=self.abc[index]
-        shuffle(self.abc)
-        self.text_bot= self.abc.pop()
-
-        self.list_word[a]=self.text_bot
+        self.text_bot=self.list_word[a-1]
 
     # cambia el color del boton si esta e la incognita
     # nota nose como cambiar para q cambie la variable del boton
@@ -182,7 +185,7 @@ class PantaJuego(tk.Frame):
     def letra_Incognita(self,a):
         print(self.list_word)
         print(self.palabra_list)
-        if self.list_word[a] in self.palabra_list:
+        if self.list_word[a-1] in self.palabra_list:
             self.boton1.configure(bg="green",fg="snow",relief="flat")
             self.boton1.config(state="disable")
         else:
