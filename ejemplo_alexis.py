@@ -68,7 +68,7 @@ class PantaJuego(tk.Frame):
     palabra = ''
     palabra_sg=""
     palabra_list=[]
-    boton_dic=["boton1","boton2","boton3","boton4","boton5","boton6","boton7","boton8","boton9","boton10"]
+    boton_dic=[1,2,3,4,5,6,7,8,9,10]
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         
@@ -76,58 +76,59 @@ class PantaJuego(tk.Frame):
         label.place(relx=0.5,y=50,anchor="center")
         
         self.carga_txt()
+        
         # BOTONES
         #################################################################
         label = ttk.Label(self, text="Tabla de letras" , font=LETRA_NOR)
         label.place(x=550,y=100, anchor="w")
         
         self.letra_bot(1)
-        self.boton1= tk.Button(self , text=self.text_bot ,
+        self.boton1= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(1))
         self.boton1.place(x=550,y=200, anchor="w",width=50)
-
+        
         self.letra_bot(2)
-        self.boton2= tk.Button(self , text=self.text_bot ,
+        self.boton2= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(2))
         self.boton2.place(x=600,y=200, anchor="w",width=50)
         
         self.letra_bot(3)
-        self.boton3= tk.Button(self , text=self.text_bot ,
+        self.boton3= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(3))
         self.boton3.place(x=550,y=250, anchor="w",width=50)
         
         self.letra_bot(4)
-        self.boton4= tk.Button(self , text=self.text_bot ,
+        self.boton4= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(4))
         self.boton4.place(x=600,y=250, anchor="w",width=50)
 
         self.letra_bot(5)
-        self.boton5= tk.Button(self , text=self.text_bot ,
+        self.boton5= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(5))
         self.boton5.place(x=550,y=300, anchor="w",width=50)
         
         self.letra_bot(6)
-        self.boton6= tk.Button(self , text=self.text_bot ,
+        self.boton6= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(6))
         self.boton6.place(x=600,y=300, anchor="w",width=50)
         
         self.letra_bot(7)
-        self.boton7= tk.Button(self , text=self.text_bot ,
+        self.boton7= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(7))
         self.boton7.place(x=550,y=350, anchor="w",width=50)
         
         self.letra_bot(8)
-        self.boton8= tk.Button(self , text=self.text_bot ,
+        self.boton8= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(8))
         self.boton8.place(x=600,y=350, anchor="w",width=50)
 
         self.letra_bot(9)
-        self.boton9= tk.Button(self , text=self.text_bot ,
+        self.boton9= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(9))
         self.boton9.place(x=550,y=400, anchor="w",width=50)
         
         self.letra_bot(10)
-        self.boton10= tk.Button(self , text=self.text_bot ,
+        self.boton10= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",10, "bold"),
             command=lambda: self.letra_Incognita(10))
         self.boton10.place(x=600,y=400, anchor="w",width=50)
 
@@ -140,8 +141,12 @@ class PantaJuego(tk.Frame):
 
         self.incognita_guiones()
 
-        incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
-        incognita.place(x=200,y=400)
+        self.incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
+        self.incognita.place(x=200,y=400)
+        
+
+        # FUNCIONES
+        ###############################################################3
 
     
     def carga_txt(self):
@@ -163,37 +168,38 @@ class PantaJuego(tk.Frame):
             saca_abc= self.abc.pop()
             self.list_word.append(saca_abc)
         shuffle(self.list_word)
-        return self.palabra_sg
 
     
     def incognita_guiones(self):
         longpalabra = len(self.palabra_sg)
-        self.palabra = '_ '*(longpalabra-1)
-        return self.palabra
+        guion=["_"]
+        self.palabra = guion*(longpalabra-1)
 
-    # a es igual al numero del boton
-    # shuffle ordena la lista radom y pop saca un valor asi no se repiten
-    # y los guarda en un dicccioario
     def letra_bot(self,a):
         # index=randint(0,26)
         # self.text_bot=self.abc[index]
         self.text_bot=self.list_word[a-1]
 
     # cambia el color del boton si esta e la incognita
-    # nota nose como cambiar para q cambie la variable del boton
+    # nota: no se como cambiar para q cambie la variable del boton
     # con en argumento q pide la funcion
     def letra_Incognita(self,a):
         print(self.list_word)
         print(self.palabra_list)
+        print(self.palabra)
         if self.list_word[a-1] in self.palabra_list:
-            self.boton1.configure(bg="green",fg="snow",relief="flat")
+            self.boton1.config(bg="green",disabledforeground="snow",relief="groove")
             self.boton1.config(state="disable")
+            cambio=self.list_word.copy()
+            nuevaletraindex=self.palabra_list.index(self.list_word[a-1])
+            sustiindex=cambio.pop(a-1)
+            self.palabra[nuevaletraindex]=sustiindex
+            self.incognita.configure(text=(self.palabra),)
         else:
-            self.boton1.configure(bg="red",fg="snow",relief="flat")
+            self.boton1.config(bg="red",disabledforeground="snow",relief="groove")
             self.boton1.config(state="disable")
-
-    def cant_bot(self,clave_boton):
-        pass
+        
+        
             
 app=Ahorcado()
 app.geometry("800x600")
