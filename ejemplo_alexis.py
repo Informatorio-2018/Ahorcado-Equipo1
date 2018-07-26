@@ -22,6 +22,7 @@ class Ahorcado(tk.Tk):
         contenedor.grid_columnconfigure(0, weight = 1)
 
         self.frames= {}
+
         #Poener aqui el nombre de la clase de para cambiar de pantalla
         #############################################################
         for F in (MenuJuego, PantaJuego):
@@ -38,7 +39,8 @@ class Ahorcado(tk.Tk):
         frame.tkraise()
 
 class MenuJuego(tk.Frame):
-
+#################### Pantalla de Menu #############################
+    
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         label = ttk.Label(self, text="Menu" , font=LETRA_GRA)
@@ -68,7 +70,7 @@ class PantaJuego(tk.Frame):
     palabra = ''
     palabra_sg=""
     palabra_list=[]
-    boton_dic=[1,2,3,4,5,6,7,8,9,10]
+    boton_dic={1:None,2:None,3:None,4:None,5:None,6:None,7:None,8:None,9:None,10:None}
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         
@@ -161,12 +163,13 @@ class PantaJuego(tk.Frame):
         copia_list=self.palabra_list.copy()
         shuffle(copia_list)
         self.list_word= copia_list+self.list_word
-        cpt=5
         shuffle(self.abc)
-        while cpt!=0:
-            cpt-=1
+        cpt=0
+        while cpt!=5:
             saca_abc= self.abc.pop()
-            self.list_word.append(saca_abc)
+            if saca_abc not in self.list_word:
+                cpt+=1
+                self.list_word.append(saca_abc)
         shuffle(self.list_word)
 
     
@@ -179,6 +182,10 @@ class PantaJuego(tk.Frame):
         # index=randint(0,26)
         # self.text_bot=self.abc[index]
         self.text_bot=self.list_word[a-1]
+        if self.list_word[a-1] in self.palabra_list:
+            self.boton_dic[a]=True
+        else:
+            self.boton_dic[a]=False
 
     # cambia el color del boton si esta e la incognita
     # nota: no se como cambiar para q cambie la variable del boton
@@ -186,19 +193,107 @@ class PantaJuego(tk.Frame):
     def letra_Incognita(self,a):
         print(self.list_word)
         print(self.palabra_list)
-        print(self.palabra)
-        if self.list_word[a-1] in self.palabra_list:
-            self.boton1.config(bg="green",disabledforeground="snow",relief="groove")
-            self.boton1.config(state="disable")
-            cambio=self.list_word.copy()
-            nuevaletraindex=self.palabra_list.index(self.list_word[a-1])
-            sustiindex=cambio.pop(a-1)
-            self.palabra[nuevaletraindex]=sustiindex
-            self.incognita.configure(text=(self.palabra),)
-        else:
-            self.boton1.config(bg="red",disabledforeground="snow",relief="groove")
-            self.boton1.config(state="disable")
+        print(self.boton_dic)
+        if self.list_word[a-1] in self.palabra_list and self.boton_dic[a]==True:
+            
+            if a==1 and self.boton_dic[1]==True:
+                self.boton1.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton1.config(state="disable")
+                self.Cambio_De_Guio(a)
+            
+            elif a==2 and self.boton_dic[2]==True:
+                self.boton2.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton2.config(state="disable")
+                self.Cambio_De_Guio(a)
+            
+            elif a==3 and self.boton_dic[3]==True:
+                self.boton3.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton3.config(state="disable")
+                self.Cambio_De_Guio(a)
+            
+            elif a==4 and self.boton_dic[4]==True:
+                self.boton4.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton4.config(state="disable")
+                self.Cambio_De_Guio(a)
+            
+            elif a==5 and self.boton_dic[5]==True:
+                self.boton5.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton5.config(state="disable")
+                self.Cambio_De_Guio(a)
+            
+            elif a==6 and self.boton_dic[6]==True:
+                self.boton6.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton6.config(state="disable")
+                self.Cambio_De_Guio(a)
+            
+            elif a==7 and self.boton_dic[7]==True:
+                self.boton7.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton7.config(state="disable")
+                self.Cambio_De_Guio(a)
+            
+            elif a==8 and self.boton_dic[8]==True:
+                self.boton8.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton8.config(state="disable")
+                self.Cambio_De_Guio(a)
+            
+            elif a==9 and self.boton_dic[9]==True:
+                self.boton9.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton9.config(state="disable")
+                self.Cambio_De_Guio(a)
+            
+            elif a==10 and self.boton_dic[10]==True:
+                self.boton10.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton10.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+        elif self.boton_dic[a]==False:
+            
+            if a==1 and self.boton_dic[1]==False:
+                self.boton1.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton1.config(state="disable")
+            
+            elif a==2 and self.boton_dic[2]==False:
+                self.boton2.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton2.config(state="disable")
+            
+            elif a==3 and self.boton_dic[3]==False:
+                self.boton3.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton3.config(state="disable")
+            
+            elif a==4 and self.boton_dic[4]==False:
+                self.boton4.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton4.config(state="disable")
+            
+            elif a==5 and self.boton_dic[5]==False:
+                self.boton5.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton5.config(state="disable")
+            
+            elif a==6 and self.boton_dic[6]==False:
+                self.boton6.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton6.config(state="disable")
+            
+            elif a==7 and self.boton_dic[7]==False:
+                self.boton7.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton7.config(state="disable")
+            
+            elif a==8 and self.boton_dic[8]==False:
+                self.boton8.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton8.config(state="disable")
+            
+            elif a==9 and self.boton_dic[9]==False:
+                self.boton9.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton9.config(state="disable")
+            
+            elif a==10 and self.boton_dic[10]==False:
+                self.boton10.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton10.config(state="disable")
         
+    def Cambio_De_Guio(self,a):
+        cambio=self.list_word.copy()
+        nuevaletraindex=self.palabra_list.index(self.list_word[a-1])
+        sustiindex=cambio.pop(a-1)
+        self.palabra[nuevaletraindex]=sustiindex
+        self.incognita.configure(text=(self.palabra),)
         
             
 app=Ahorcado()
