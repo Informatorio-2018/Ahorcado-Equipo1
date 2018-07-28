@@ -2,6 +2,7 @@ from random import randint
 from random import shuffle
 import tkinter as tk
 from tkinter import ttk
+import time
 
 LETRA_GRA=("Verdana",113)
 LETRA_GRA2=("Verdana",30)
@@ -65,6 +66,7 @@ class MenuJuego(tk.Frame):
 class PantaJuego(tk.Frame):
     
     text_bot=0
+    tiempo=0
     list_word=[]
     abc=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z']
     palabra = ''
@@ -152,16 +154,23 @@ class PantaJuego(tk.Frame):
 
     
     def carga_txt(self):
+        
+        # Carga un palabra random desde ahorcado.txt
         palabras = open('ahorcado_5.txt','r')
         listPalabras = palabras.readlines()
         palabras.close()
         i = randint(0,600)
         self.palabra_sg = listPalabras[i]
+        
+        # transforma la palabra en lista y la guarda en palabra_list
+        # y la copia
         strip = self.palabra_sg.strip()
         join = ",".join(strip)
         self.palabra_list = join.split(",")
         copia_list=self.palabra_list.copy()
         shuffle(copia_list)
+        
+        # list_word es donde se guarda las letras para los botones
         self.list_word= copia_list+self.list_word
         shuffle(self.abc)
         cpt=0
@@ -188,8 +197,7 @@ class PantaJuego(tk.Frame):
             self.boton_dic[a]=False
 
     # cambia el color del boton si esta e la incognita
-    # nota: no se como cambiar para q cambie la variable del boton
-    # con en argumento q pide la funcion
+    # nota: buscar manera de simplificar
     def letra_Incognita(self,a):
         print(self.list_word)
         print(self.palabra_list)
@@ -294,7 +302,7 @@ class PantaJuego(tk.Frame):
         sustiindex=cambio.pop(a-1)
         self.palabra[nuevaletraindex]=sustiindex
         self.incognita.configure(text=(self.palabra),)
-        
+    
             
 app=Ahorcado()
 app.geometry("800x600")
