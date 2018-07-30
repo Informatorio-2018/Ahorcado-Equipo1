@@ -73,6 +73,8 @@ class PantaJuego(tk.Frame):
     palabra_sg=""
     palabra_list=[]
     boton_dic={1:None,2:None,3:None,4:None,5:None,6:None,7:None,8:None,9:None,10:None}
+    conta=0
+
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         
@@ -298,10 +300,17 @@ class PantaJuego(tk.Frame):
         
     def Cambio_De_Guio(self,a):
         cambio=self.list_word.copy()
-        nuevaletraindex=self.palabra_list.index(self.list_word[a-1])
-        sustiindex=cambio.pop(a-1)
-        self.palabra[nuevaletraindex]=sustiindex
-        self.incognita.configure(text=(self.palabra),)
+        nuevaletraindex=[i for i, x in enumerate(self.palabra_list) if x == (self.list_word[a-1])]
+        
+        if len(nuevaletraindex)>1:
+            sustiindex=cambio.pop(a-1)
+            self.palabra[nuevaletraindex[self.conta]]=sustiindex
+            self.conta+=1
+            self.incognita.configure(text=(self.palabra),)    
+        else:
+            sustiindex=cambio.pop(a-1)
+            self.palabra[nuevaletraindex[0]]=sustiindex
+            self.incognita.configure(text=(self.palabra),)
     
             
 app=Ahorcado()
