@@ -39,8 +39,8 @@ class Ahorcado(tk.Tk):
         frame=self.frames[cont]
         frame.tkraise()
 
-class MenuJuego(tk.Frame):
 #################### Pantalla de Menu #############################
+class MenuJuego(tk.Frame):
     
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
@@ -75,8 +75,7 @@ class PantaJuego(tk.Frame):
     boton_dic={1:None,2:None,3:None,4:None,5:None,6:None,7:None,8:None,9:None,10:None}
     conta=0
     conta_img=0
-    imagenes="imagenes/horca.png"    
-
+    
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         
@@ -152,12 +151,11 @@ class PantaJuego(tk.Frame):
         self.incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
         self.incognita.place(x=200,y=400)
         
-        self.canvas = tk.Canvas(self, width = 300, height = 300)      
+        self.monigote = tk.PhotoImage(file="imagenes/horca.png")
+        self.canvas = tk.Label(self,image=self.monigote)      
         self.canvas.pack()
-        self.canvas.place(x=150,y=100) 
-        self.monigote = tk.PhotoImage(file=self.imagenes)
-        self.canvas.create_image(100,100,image=self.monigote)
-
+        self.canvas.place(x=250,y=150) 
+        
         # FUNCIONES
         ###############################################################3
 
@@ -330,15 +328,31 @@ class PantaJuego(tk.Frame):
             self.incognita.configure(text=(self.palabra),)
     
     def actuliza_img(self):
-        if conta_img==0:
-            self.imagenes="imagenes/horca.png"
-            self.canvas.itemconfig(self, image=self.monigote)
-            conta_img+=1
+        if self.conta_img==0:
+            self.conta_img+=1
+            self.monigote= tk.PhotoImage(file="imagenes/cabeza.png")
+            self.canvas.configure(image=self.monigote)
+            self.canvas.image=self.monigote
 
-        elif conta_img==1:
-            self.imagenes="imagenes/cabeza.png"
-        elif conta_img==2:
-            self.imagenes="imagenes/cuerpo.png"
+        elif self.conta_img==1:
+            self.conta_img+=1
+            self.monigote= tk.PhotoImage(file="imagenes/cuerpo.png")
+            self.canvas.configure(image=self.monigote)
+            self.canvas.image=self.monigote        
+        elif self.conta_img==2:
+            self.monigote= tk.PhotoImage(file="imagenes/piernas.png")
+            self.canvas.configure(image=self.monigote)
+            self.canvas.image=self.monigote
+            self.conta_img+=1
+        elif self.conta_img==3:
+            self.monigote= tk.PhotoImage(file="imagenes/extremidades.png")
+            self.canvas.configure(image=self.monigote)
+            self.canvas.image=self.monigote
+            self.conta_img+=1
+        elif self.conta_img==4:
+            self.monigote= tk.PhotoImage(file="imagenes/murio.png")
+            self.canvas.configure(image=self.monigote)
+            self.canvas.image=self.monigote
 
             
 app=Ahorcado()
