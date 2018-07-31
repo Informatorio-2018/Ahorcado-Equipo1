@@ -74,6 +74,8 @@ class PantaJuego(tk.Frame):
     palabra_list=[]
     boton_dic={1:None,2:None,3:None,4:None,5:None,6:None,7:None,8:None,9:None,10:None}
     conta=0
+    conta_img=0
+    imagenes="imagenes/horca.png"    
 
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
@@ -150,6 +152,11 @@ class PantaJuego(tk.Frame):
         self.incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
         self.incognita.place(x=200,y=400)
         
+        self.canvas = tk.Canvas(self, width = 300, height = 300)      
+        self.canvas.pack()
+        self.canvas.place(x=150,y=100) 
+        self.monigote = tk.PhotoImage(file=self.imagenes)
+        self.canvas.create_image(100,100,image=self.monigote)
 
         # FUNCIONES
         ###############################################################3
@@ -261,43 +268,53 @@ class PantaJuego(tk.Frame):
             if a==1 and self.boton_dic[1]==False:
                 self.boton1.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton1.config(state="disable")
+                self.actuliza_img()
             
             elif a==2 and self.boton_dic[2]==False:
                 self.boton2.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton2.config(state="disable")
-            
+                self.actuliza_img()
+
             elif a==3 and self.boton_dic[3]==False:
                 self.boton3.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton3.config(state="disable")
-            
+                self.actuliza_img()
+
             elif a==4 and self.boton_dic[4]==False:
                 self.boton4.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton4.config(state="disable")
-            
+                self.actuliza_img()
+
             elif a==5 and self.boton_dic[5]==False:
                 self.boton5.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton5.config(state="disable")
-            
+                self.actuliza_img()
+
             elif a==6 and self.boton_dic[6]==False:
                 self.boton6.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton6.config(state="disable")
-            
+                self.actuliza_img()
+
             elif a==7 and self.boton_dic[7]==False:
                 self.boton7.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton7.config(state="disable")
-            
+                self.actuliza_img()
+
             elif a==8 and self.boton_dic[8]==False:
                 self.boton8.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton8.config(state="disable")
-            
+                self.actuliza_img()
+
             elif a==9 and self.boton_dic[9]==False:
                 self.boton9.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton9.config(state="disable")
-            
+                self.actuliza_img()
+
             elif a==10 and self.boton_dic[10]==False:
                 self.boton10.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton10.config(state="disable")
-        
+                self.actuliza_img()
+
     def Cambio_De_Guio(self,a):
         cambio=self.list_word.copy()
         nuevaletraindex=[i for i, x in enumerate(self.palabra_list) if x == (self.list_word[a-1])]
@@ -312,6 +329,17 @@ class PantaJuego(tk.Frame):
             self.palabra[nuevaletraindex[0]]=sustiindex
             self.incognita.configure(text=(self.palabra),)
     
+    def actuliza_img(self):
+        if conta_img==0:
+            self.imagenes="imagenes/horca.png"
+            self.canvas.itemconfig(self, image=self.monigote)
+            conta_img+=1
+
+        elif conta_img==1:
+            self.imagenes="imagenes/cabeza.png"
+        elif conta_img==2:
+            self.imagenes="imagenes/cuerpo.png"
+
             
 app=Ahorcado()
 app.geometry("800x600")
