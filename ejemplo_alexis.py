@@ -181,7 +181,7 @@ class PantaJuego(tk.Frame):
         palabras = open('ahorcado_5.txt','r')
         listPalabras = palabras.readlines()
         palabras.close()
-        i = randint(0,600)
+        i = randint(0,30)
         self.palabra_sg = listPalabras[i]
         
         # transforma la palabra en lista y la guarda en palabra_list
