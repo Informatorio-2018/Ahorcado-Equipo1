@@ -26,7 +26,7 @@ class Ahorcado(tk.Tk):
 
         #Poener aqui el nombre de la clase de para cambiar de pantalla
         #############################################################
-        for F in (MenuJuego, PantaJuego):
+        for F in (MenuJuego, PantaJuego,PantaPuntua,PantaDificult):
             frame = F(contenedor,self)
             self.frames[F] = frame
             frame.grid(row=0 , column=0 , sticky="nsew")
@@ -55,11 +55,11 @@ class MenuJuego(tk.Frame):
         boton1.pack(ipadx=50,ipady=10,pady=5)
 
         boton2= ttk.Button(self , text="Puntuacion" ,style='my.TButton',
-            command=lambda: controlador.mostrar_frame(PantaJuego))
+            command=lambda: controlador.mostrar_frame(PantaPuntua))
         boton2.pack(ipadx=50,ipady=10,pady=5)
 
         boton3= ttk.Button(self , text="Dificultad" ,style='my.TButton',
-            command=lambda: controlador.mostrar_frame(PantaJuego))
+            command=lambda: controlador.mostrar_frame(PantaDificult))
         boton3.pack(ipadx=50,ipady=10,pady=5)
 
         boton4= ttk.Button(self , text="Salir" ,style='my.TButton',
@@ -382,6 +382,45 @@ class PantaJuego(tk.Frame):
             self.text_timer.configure(text="%d" % self.remaining)
             self.remaining = self.remaining - 1
             self.after(1000, self.countdown)    
+
+class PantaPuntua(tk.Frame):
+    
+    def __init__(self, padre, controlador):
+        tk.Frame.__init__(self,padre)
+        label = ttk.Label(self, text="PUNTUACIONES" , font=LETRA_GRA2)
+        label.pack(pady=50)
+
+        
+        for i in range(10):
+            tk.Label(self,text="text-1000000",font=20).pack(pady=5)
+
+
+        b_volver= ttk.Button(self , text="Volver" ,
+            command=lambda: controlador.mostrar_frame(MenuJuego))
+        b_volver.pack(ipadx=50,ipady=10,pady=5)
+        b_volver.place(x=400,y=550,anchor="s")
+
+class PantaDificult(tk.Frame):
+    
+    def __init__(self, padre, controlador):
+        tk.Frame.__init__(self,padre)
+        label = ttk.Label(self, text="DIFICULTADES" , font=LETRA_GRA2)
+        label.pack(pady=50)
+
+        facil= ttk.Button(self,text="FACIL")
+        facil.pack(pady=20,ipady=20,ipadx=40)
+
+        normal= ttk.Button(self,text="NORMAL")
+        normal.pack(pady=20,ipady=20,ipadx=40)
+
+        dificil= ttk.Button(self,text="DIFICIL")
+        dificil.pack(pady=20,ipady=20,ipadx=40)
+
+        b_volver= ttk.Button(self , text="Volver" ,
+            command=lambda: controlador.mostrar_frame(MenuJuego))
+        b_volver.pack(ipadx=50,ipady=10,pady=5)
+        b_volver.place(x=400,y=550,anchor="s")
+
 
 
 app=Ahorcado()
