@@ -144,6 +144,81 @@ class PantaJuego(tk.Frame):
             command=lambda: self.letra_Incognita(10))
         self.boton10.place(x=600,y=400, anchor="w",width=50)
 
+        self.letra_bot(11)
+        self.boton11= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(11))
+        self.boton11.place(x=650,y=200, anchor="w",width=50)
+
+        self.letra_bot(12)
+        self.boton12= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(12))
+        self.boton12.place(x=700,y=200, anchor="w",width=50)
+
+        self.letra_bot(13)
+        self.boton13= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(13))
+        self.boton13.place(x=650,y=250, anchor="w",width=50)
+
+        self.letra_bot(14)
+        self.boton14= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(14))
+        self.boton14.place(x=700,y=250, anchor="w",width=50)
+
+        self.letra_bot(15)
+        self.boton15= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(15))
+        self.boton15.place(x=650,y=300, anchor="w",width=50)
+
+        self.letra_bot(16)
+        self.boton16= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(16))
+        self.boton16.place(x=700,y=300, anchor="w",width=50)
+
+        self.letra_bot(17)
+        self.boton17= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(17))
+        self.boton17.place(x=650,y=350, anchor="w",width=50)
+
+        self.letra_bot(18)
+        self.boton18= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(18))
+        self.boton18.place(x=700,y=350, anchor="w",width=50)
+
+        self.letra_bot(19)
+        self.boton19= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(19))
+        self.boton19.place(x=650,y=400, anchor="w",width=50)
+
+        self.letra_bot(20)
+        self.boton20= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(20))
+        self.boton20.place(x=700,y=400, anchor="w",width=50)
+
+        self.letra_bot(21)
+        self.boton21= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(21))
+        self.boton21.place(x=750,y=200, anchor="w",width=50)
+
+        self.letra_bot(22)
+        self.boton22= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(22))
+        self.boton22.place(x=750,y=250, anchor="w",width=50)
+
+        self.letra_bot(23)
+        self.boton23= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(23))
+        self.boton23.place(x=750,y=300, anchor="w",width=50)
+
+        self.letra_bot(24)
+        self.boton24= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(24))
+        self.boton24.place(x=750,y=350, anchor="w",width=50)
+
+        self.letra_bot(25)
+        self.boton25= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+            command=lambda: self.letra_Incognita(25))
+        self.boton25.place(x=750,y=400, anchor="w",width=50)
+
         self.b_volver= ttk.Button(self , text="Volver" ,
             command=lambda: controlador.mostrar_frame(MenuJuego))
         self.b_volver.pack(ipadx=50,ipady=10,pady=5)
@@ -203,7 +278,7 @@ class PantaJuego(tk.Frame):
         self.list_word= copia_list+self.list_word
         shuffle(self.abc)
         cpt=0
-        while cpt!=5:
+        while len(self.list_word)!=25:
             saca_abc= self.abc.pop()
             if saca_abc not in self.list_word:
                 cpt+=1
@@ -283,6 +358,82 @@ class PantaJuego(tk.Frame):
                 self.boton10.config(state="disable")
                 self.Cambio_De_Guio(a)
 
+            elif a==11 and self.boton_dic[11]==True:
+                self.boton11.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton11.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==12 and self.boton_dic[12]==True:
+                self.boton12.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton12.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==13 and self.boton_dic[13]==True:
+                self.boton13.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton13.config(state="disable")
+                self.Cambio3De_Guio(a)
+
+            elif a==14 and self.boton_dic[14]==True:
+                self.boton14.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton14.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==15 and self.boton_dic[15]==True:
+                self.boton15.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton15.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==16 and self.boton_dic[16]==True:
+                self.boton16.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton16.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==17 and self.boton_dic[17]==True:
+                self.boton17.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton17.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==18 and self.boton_dic[18]==True:
+                self.boton18.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton18.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==19 and self.boton_dic[19]==True:
+                self.boton19.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton19.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==20 and self.boton_dic[20]==True:
+                self.boton20.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton20.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==21 and self.boton_dic[21]==True:
+                self.boton21.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton21.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==22 and self.boton_dic[22]==True:
+                self.boton22.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton22.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==23 and self.boton_dic[23]==True:
+                self.boton23.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton23.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==24 and self.boton_dic[24]==True:
+                self.boton24.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton24.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+            elif a==25 and self.boton_dic[25]==True:
+                self.boton25.config(bg="green",disabledforeground="snow",relief="groove")
+                self.boton25.config(state="disable")
+                self.Cambio_De_Guio(a)
+
+
         elif self.boton_dic[a]==False:
 
             if a==1 and self.boton_dic[1]==False:
@@ -334,6 +485,83 @@ class PantaJuego(tk.Frame):
                 self.boton10.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton10.config(state="disable")
                 self.actuliza_img()
+
+            elif a==11 and self.boton_dic[11]==False:
+                self.boton11.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton11.config(state="disable")
+                self.actuliza_img()
+
+            elif a==12 and self.boton_dic[12]==False:
+                self.boton12.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton12.config(state="disable")
+                self.actuliza_img()
+
+            elif a==13 and self.boton_dic[13]==False:
+                self.boton13.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton13.config(state="disable")
+                self.actuliza_img()
+
+            elif a==14 and self.boton_dic[14]==False:
+                self.boton14.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton14.config(state="disable")
+                self.actuliza_img()
+
+            elif a==15 and self.boton_dic[15]==False:
+                self.boton15.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton15.config(state="disable")
+                self.actuliza_img()
+
+            elif a==16 and self.boton_dic[16]==False:
+                self.boton16.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton16.config(state="disable")
+                self.actuliza_img()
+
+            elif a==17 and self.boton_dic[17]==False:
+                self.boton17.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton17.config(state="disable")
+                self.actuliza_img()
+
+            elif a==18 and self.boton_dic[18]==False:
+                self.boton18.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton18.config(state="disable")
+                self.actuliza_img()
+
+            elif a==19 and self.boton_dic[19]==False:
+                self.boton19.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton19.config(state="disable")
+                self.actuliza_img()
+
+            elif a==20 and self.boton_dic[20]==False:
+                self.boton20.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton20.config(state="disable")
+                self.actuliza_img()
+
+            elif a==21 and self.boton_dic[21]==False:
+                self.boton21.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton21.config(state="disable")
+                self.actuliza_img()
+
+            elif a==22 and self.boton_dic[22]==False:
+                self.boton22.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton22.config(state="disable")
+                self.actuliza_img()
+
+            elif a==23 and self.boton_dic[23]==False:
+                self.boton23.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton23.config(state="disable")
+                self.actuliza_img()
+
+            elif a==24 and self.boton_dic[24]==False:
+                self.boton24.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton24.config(state="disable")
+                self.actuliza_img()
+
+            elif a==25 and self.boton_dic[25]==False:
+                self.boton25.config(bg="red",disabledforeground="snow",relief="groove")
+                self.boton25.config(state="disable")
+                self.actuliza_img()
+
+
 
     def Cambio_De_Guio(self,a):
         cambio=self.list_word.copy()
@@ -453,10 +681,10 @@ class PantaDerrota(tk.Frame):
         label.pack(pady=50)
 
         label2 = ttk.Label(self, text="DERROTA" , font=LETRA_NOR)
-        label2.pack(pady=50)
+        label2.pack()
 
         label3 = ttk.Label(self, text="DERROTA" , font=LETRA_NOR)
-        label3.pack(pady=50)
+        label3.pack()
 
 
 app=Ahorcado()
