@@ -26,7 +26,7 @@ class Ahorcado(tk.Tk):
 
         #Poener aqui el nombre de la clase de para cambiar de pantalla
         #############################################################
-        for F in (MenuJuego, PantaJuego,PantaPuntua,PantaDificult,ConfirmarSalida):
+        for F in (MenuJuego, PantaJuego,PantaPuntua,PantaDificult,PantaDerrota,ConfirmarSalida):
             frame = F(contenedor,self)
             self.frames[F] = frame
             frame.grid(row=0 , column=0 , sticky="nsew")
@@ -144,10 +144,10 @@ class PantaJuego(tk.Frame):
             command=lambda: self.letra_Incognita(10))
         self.boton10.place(x=600,y=400, anchor="w",width=50)
 
-        b_volver= ttk.Button(self , text="Volver" ,
+        self.b_volver= ttk.Button(self , text="Volver" ,
             command=lambda: controlador.mostrar_frame(MenuJuego))
-        b_volver.pack(ipadx=50,ipady=10,pady=5)
-        b_volver.place(x=400,y=550,anchor="s")
+        self.b_volver.pack(ipadx=50,ipady=10,pady=5)
+        self.b_volver.place(x=400,y=550,anchor="s")
 
         #############################################################3
 
@@ -170,6 +170,13 @@ class PantaJuego(tk.Frame):
         self.text_timer.place(x=420,y=500,anchor="s")
 
         self.countdown(10)
+
+        self.b2_volver= ttk.Button(self , text="Perdiste" ,
+            command=lambda: controlador.mostrar_frame(PantaDerrota))
+        self.b2_volver.pack(ipadx=50,ipady=10,pady=5)
+        self.b2_volver.place(x=400,y=550,anchor="s")
+        self.b2_volver.pi=self.b2_volver.place_info()
+        self.b2_volver.place_forget()
 
         # FUNCIONES
         ###############################################################3
@@ -336,7 +343,9 @@ class PantaJuego(tk.Frame):
             sustiindex=cambio.pop(a-1)
             self.palabra[nuevaletraindex[self.conta]]=sustiindex
             self.conta+=1
-            self.incognita.configure(text=(self.palabra),)
+            self.incognita.configure(text=(self.palabra))
+            if len(nuevaletraindex) == self.conta:
+                self.conta=0 
         else:
             sustiindex=cambio.pop(a-1)
             self.palabra[nuevaletraindex[0]]=sustiindex
@@ -371,6 +380,7 @@ class PantaJuego(tk.Frame):
             self.monigote= tk.PhotoImage(file="imagenes/murio.png")
             self.canvas.configure(image=self.monigote)
             self.canvas.image=self.monigote
+            self.mostrarderrota()
 
     def countdown(self, remaining = None):
         if remaining is not None:
@@ -382,6 +392,10 @@ class PantaJuego(tk.Frame):
             self.text_timer.configure(text="%d" % self.remaining)
             self.remaining = self.remaining - 1
             self.after(1000, self.countdown)
+
+    def mostrarderrota(self):
+        self.b2_volver.place(self.b2_volver.pi)
+        self.b_volver.place_forget()
 
 class PantaPuntua(tk.Frame):
 
@@ -430,6 +444,20 @@ class ConfirmarSalida(tk.Frame):
             b_si.pack(pady=50)
             b_no=tk.Button(self , text="NO" , command= lambda: controlador.mostrar_frame(MenuJuego),font=LETRA_GRA2,width=5)
             b_no.pack(pady=50)
+
+class PantaDerrota(tk.Frame):
+    
+    def __init__(self, padre, controlador):
+        tk.Frame.__init__(self,padre)
+        label = ttk.Label(self, text="DERROTA" , font=LETRA_GRA2)
+        label.pack(pady=50)
+
+        label2 = ttk.Label(self, text="DERROTA" , font=LETRA_NOR)
+        label2.pack(pady=50)
+
+        label3 = ttk.Label(self, text="DERROTA" , font=LETRA_NOR)
+        label3.pack(pady=50)
+
 
 app=Ahorcado()
 app.geometry("800x600")
