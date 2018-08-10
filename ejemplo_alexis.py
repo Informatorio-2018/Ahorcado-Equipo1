@@ -16,7 +16,7 @@ class Ahorcado(tk.Tk):
         tk.Tk.__init__(self,*args,**kwargs)
 
         tk.Tk.wm_title(self,"Juego Ahorcado")
-        
+
         contenedor = tk.Frame(self)
         contenedor.pack(side="top" , fill="both" , expand=True)
         contenedor.grid_rowconfigure(0, weight = 1)
@@ -26,14 +26,14 @@ class Ahorcado(tk.Tk):
 
         #Poener aqui el nombre de la clase de para cambiar de pantalla
         #############################################################
-        for F in (MenuJuego, PantaJuego,PantaPuntua,PantaDificult):
+        for F in (MenuJuego, PantaJuego,PantaPuntua,PantaDificult,ConfirmarSalida):
             frame = F(contenedor,self)
             self.frames[F] = frame
             frame.grid(row=0 , column=0 , sticky="nsew")
-        
+
         self.mostrar_frame(MenuJuego)
         ###############################################################
-        
+
     def mostrar_frame(self, cont):
 
         frame=self.frames[cont]
@@ -41,7 +41,7 @@ class Ahorcado(tk.Tk):
 
 #################### Pantalla de Menu #############################
 class MenuJuego(tk.Frame):
-    
+
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         label = ttk.Label(self, text="Ahorcado" , font=LETRA_GRA)
@@ -63,11 +63,11 @@ class MenuJuego(tk.Frame):
         boton3.pack(ipadx=50,ipady=10,pady=5)
 
         boton4= ttk.Button(self , text="Salir" ,style='my.TButton',
-            command=quit)
+            command=lambda: controlador.mostrar_frame(ConfirmarSalida))
         boton4.pack(ipadx=50,ipady=10,pady=5)
 
 class PantaJuego(tk.Frame):
-    
+
     text_bot=0
     tiempo=0
     list_word=[]
@@ -78,37 +78,37 @@ class PantaJuego(tk.Frame):
     boton_dic={1:None,2:None,3:None,4:None,5:None,6:None,7:None,8:None,9:None,10:None}
     conta=0
     conta_img=0
-    
+
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
-        
+
         label = ttk.Label(self, text="Ahorcado" , font=LETRA_GRA2)
         label.place(relx=0.5,y=50,anchor="center")
-        
+
         self.carga_txt()
 
         self.remaining = 0
-        
+
         # BOTONES
         #################################################################
         label = ttk.Label(self, text="Tabla de letras" , font=LETRA_NOR)
         label.place(x=550,y=100, anchor="w")
-        
+
         self.letra_bot(1)
         self.boton1= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(1))
         self.boton1.place(x=550,y=200, anchor="w",width=50)
-        
+
         self.letra_bot(2)
         self.boton2= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(2))
         self.boton2.place(x=600,y=200, anchor="w",width=50)
-        
+
         self.letra_bot(3)
         self.boton3= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(3))
         self.boton3.place(x=550,y=250, anchor="w",width=50)
-        
+
         self.letra_bot(4)
         self.boton4= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(4))
@@ -118,17 +118,17 @@ class PantaJuego(tk.Frame):
         self.boton5= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(5))
         self.boton5.place(x=550,y=300, anchor="w",width=50)
-        
+
         self.letra_bot(6)
         self.boton6= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(6))
         self.boton6.place(x=600,y=300, anchor="w",width=50)
-        
+
         self.letra_bot(7)
         self.boton7= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(7))
         self.boton7.place(x=550,y=350, anchor="w",width=50)
-        
+
         self.letra_bot(8)
         self.boton8= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(8))
@@ -138,7 +138,7 @@ class PantaJuego(tk.Frame):
         self.boton9= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(9))
         self.boton9.place(x=550,y=400, anchor="w",width=50)
-        
+
         self.letra_bot(10)
         self.boton10= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(10))
@@ -155,35 +155,35 @@ class PantaJuego(tk.Frame):
 
         self.incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
         self.incognita.place(x=200,y=400)
-        
+
         self.monigote = tk.PhotoImage(file="imagenes/horca.png")
-        self.canvas = tk.Label(self,image=self.monigote)      
+        self.canvas = tk.Label(self,image=self.monigote)
         self.canvas.pack()
         self.canvas.place(x=250,y=150)
 
-        text_score = ttk.Label(self,text="Puntuacion: ",font=13) 
+        text_score = ttk.Label(self,text="Puntuacion: ",font=13)
         text_score.pack()
         text_score.place(x=350,y=500,anchor="s")
-        
-        self.text_timer = tk.Label(self,text="",font=13) 
+
+        self.text_timer = tk.Label(self,text="",font=13)
         self.text_timer.pack()
         self.text_timer.place(x=420,y=500,anchor="s")
-        
+
         self.countdown(10)
 
         # FUNCIONES
         ###############################################################3
 
-    
+
     def carga_txt(self):
-        
+
         # Carga un palabra random desde ahorcado.txt
         palabras = open('ahorcado_5.txt','r')
         listPalabras = palabras.readlines()
         palabras.close()
         i = randint(0,30)
         self.palabra_sg = listPalabras[i]
-        
+
         # transforma la palabra en lista y la guarda en palabra_list
         # y la copia
         strip = self.palabra_sg.strip()
@@ -191,7 +191,7 @@ class PantaJuego(tk.Frame):
         self.palabra_list = join.split(",")
         copia_list=self.palabra_list.copy()
         shuffle(copia_list)
-        
+
         # list_word es donde se guarda las letras para los botones
         self.list_word= copia_list+self.list_word
         shuffle(self.abc)
@@ -203,7 +203,7 @@ class PantaJuego(tk.Frame):
                 self.list_word.append(saca_abc)
         shuffle(self.list_word)
 
-    
+
     def incognita_guiones(self):
         longpalabra = len(self.palabra_sg)
         guion=["_"]
@@ -225,64 +225,64 @@ class PantaJuego(tk.Frame):
         print(self.palabra_list)
         print(self.boton_dic)
         if self.list_word[a-1] in self.palabra_list and self.boton_dic[a]==True:
-            
+
             if a==1 and self.boton_dic[1]==True:
                 self.boton1.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton1.config(state="disable")
                 self.Cambio_De_Guio(a)
-            
+
             elif a==2 and self.boton_dic[2]==True:
                 self.boton2.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton2.config(state="disable")
                 self.Cambio_De_Guio(a)
-            
+
             elif a==3 and self.boton_dic[3]==True:
                 self.boton3.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton3.config(state="disable")
                 self.Cambio_De_Guio(a)
-            
+
             elif a==4 and self.boton_dic[4]==True:
                 self.boton4.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton4.config(state="disable")
                 self.Cambio_De_Guio(a)
-            
+
             elif a==5 and self.boton_dic[5]==True:
                 self.boton5.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton5.config(state="disable")
                 self.Cambio_De_Guio(a)
-            
+
             elif a==6 and self.boton_dic[6]==True:
                 self.boton6.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton6.config(state="disable")
                 self.Cambio_De_Guio(a)
-            
+
             elif a==7 and self.boton_dic[7]==True:
                 self.boton7.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton7.config(state="disable")
                 self.Cambio_De_Guio(a)
-            
+
             elif a==8 and self.boton_dic[8]==True:
                 self.boton8.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton8.config(state="disable")
                 self.Cambio_De_Guio(a)
-            
+
             elif a==9 and self.boton_dic[9]==True:
                 self.boton9.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton9.config(state="disable")
                 self.Cambio_De_Guio(a)
-            
+
             elif a==10 and self.boton_dic[10]==True:
                 self.boton10.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton10.config(state="disable")
                 self.Cambio_De_Guio(a)
 
         elif self.boton_dic[a]==False:
-            
+
             if a==1 and self.boton_dic[1]==False:
                 self.boton1.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton1.config(state="disable")
                 self.actuliza_img()
-            
+
             elif a==2 and self.boton_dic[2]==False:
                 self.boton2.config(bg="red",disabledforeground="snow",relief="groove")
                 self.boton2.config(state="disable")
@@ -331,17 +331,17 @@ class PantaJuego(tk.Frame):
     def Cambio_De_Guio(self,a):
         cambio=self.list_word.copy()
         nuevaletraindex=[i for i, x in enumerate(self.palabra_list) if x == (self.list_word[a-1])]
-        
+
         if len(nuevaletraindex)>1:
             sustiindex=cambio.pop(a-1)
             self.palabra[nuevaletraindex[self.conta]]=sustiindex
             self.conta+=1
-            self.incognita.configure(text=(self.palabra),)    
+            self.incognita.configure(text=(self.palabra),)
         else:
             sustiindex=cambio.pop(a-1)
             self.palabra[nuevaletraindex[0]]=sustiindex
             self.incognita.configure(text=(self.palabra),)
-    
+
     def actuliza_img(self):
         if self.conta_img==0:
             self.conta_img+=1
@@ -353,25 +353,25 @@ class PantaJuego(tk.Frame):
             self.conta_img+=1
             self.monigote= tk.PhotoImage(file="imagenes/cuerpo.png")
             self.canvas.configure(image=self.monigote)
-            self.canvas.image=self.monigote        
-        
+            self.canvas.image=self.monigote
+
         elif self.conta_img==2:
             self.monigote= tk.PhotoImage(file="imagenes/piernas.png")
             self.canvas.configure(image=self.monigote)
             self.canvas.image=self.monigote
             self.conta_img+=1
-        
+
         elif self.conta_img==3:
             self.monigote= tk.PhotoImage(file="imagenes/extremidades.png")
             self.canvas.configure(image=self.monigote)
             self.canvas.image=self.monigote
             self.conta_img+=1
-        
+
         elif self.conta_img==4:
             self.monigote= tk.PhotoImage(file="imagenes/murio.png")
             self.canvas.configure(image=self.monigote)
             self.canvas.image=self.monigote
-    
+
     def countdown(self, remaining = None):
         if remaining is not None:
             self.remaining = remaining
@@ -381,16 +381,16 @@ class PantaJuego(tk.Frame):
         else:
             self.text_timer.configure(text="%d" % self.remaining)
             self.remaining = self.remaining - 1
-            self.after(1000, self.countdown)    
+            self.after(1000, self.countdown)
 
 class PantaPuntua(tk.Frame):
-    
+
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         label = ttk.Label(self, text="PUNTUACIONES" , font=LETRA_GRA2)
         label.pack(pady=50)
 
-        
+
         for i in range(10):
             tk.Label(self,text="text-1000000",font=20).pack(pady=5)
 
@@ -401,7 +401,7 @@ class PantaPuntua(tk.Frame):
         b_volver.place(x=400,y=550,anchor="s")
 
 class PantaDificult(tk.Frame):
-    
+
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         label = ttk.Label(self, text="DIFICULTADES" , font=LETRA_GRA2)
@@ -421,7 +421,15 @@ class PantaDificult(tk.Frame):
         b_volver.pack(ipadx=50,ipady=10,pady=5)
         b_volver.place(x=400,y=550,anchor="s")
 
-
+class ConfirmarSalida(tk.Frame):
+        def __init__(self, padre, controlador):
+            tk.Frame.__init__(self,padre)
+            label = ttk.Label(self, text="¿ESTA SEGURO DE QUE DESEA SALIR?" , font=LETRA_GRA2)
+            label.pack(pady=50)
+            b_si=tk.Button(self , text="SI" , command= quit,font=LETRA_GRA2,width=5)
+            b_si.pack(pady=50)
+            b_no=tk.Button(self , text="NO" , command= lambda: controlador.mostrar_frame(MenuJuego),font=LETRA_GRA2,width=5)
+            b_no.pack(pady=50)
 
 app=Ahorcado()
 app.geometry("800x600")
