@@ -2,7 +2,10 @@ from random import randint
 from random import shuffle
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 import time
+from PIL import Image, ImageTk, ImageSequence
+from pygame import *
 
 LETRA_GRA=("Verdana",113)
 LETRA_GRA2=("Verdana",30)
@@ -26,7 +29,7 @@ class Ahorcado(tk.Tk):
 
         #Poener aqui el nombre de la clase de para cambiar de pantalla
         #############################################################
-        for F in (MenuJuego, PantaJuego,PantaPuntua,PantaDificult,PantaDerrota,ConfirmarSalida):
+        for F in (MenuJuego, PantaJuego,PantaPuntua,PantaDificult,PantaDerrota,PantaVictoria,ConfirmarSalida):
             frame = F(contenedor,self)
             self.frames[F] = frame
             frame.grid(row=0 , column=0 , sticky="nsew")
@@ -38,6 +41,12 @@ class Ahorcado(tk.Tk):
 
         frame=self.frames[cont]
         frame.tkraise()
+
+    def mostrar_frame2(self, cont):
+
+        frame=self.frames[cont]
+        frame.tkraise()
+        PantaJuego.muca()
 
 #################### Pantalla de Menu #############################
 class MenuJuego(tk.Frame):
@@ -51,11 +60,11 @@ class MenuJuego(tk.Frame):
         s.configure('my.TButton', font= 15)
 
         boton1= ttk.Button(self , text="Jugar" ,style='my.TButton',
-            command=lambda: controlador.mostrar_frame(PantaJuego))
+            command=lambda: controlador.mostrar_frame2(PantaJuego))
         boton1.pack(ipadx=50,ipady=10,pady=5)
 
         boton2= ttk.Button(self , text="Puntuacion" ,style='my.TButton',
-            command=lambda: controlador.mostrar_frame(PantaPuntua))
+            command=lambda: controlador.mostrar_frame(PantaVictoria))
         boton2.pack(ipadx=50,ipady=10,pady=5)
 
         boton3= ttk.Button(self , text="Dificultad" ,style='my.TButton',
@@ -78,14 +87,14 @@ class PantaJuego(tk.Frame):
     boton_dic={1:None,2:None,3:None,4:None,5:None,6:None,7:None,8:None,9:None,10:None}
     conta=0
     conta_img=0
+    dificultad="medio"
+    
 
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
 
         label = ttk.Label(self, text="Ahorcado" , font=LETRA_GRA2)
         label.place(relx=0.5,y=50,anchor="center")
-
-        self.carga_txt()
 
         self.remaining = 0
 
@@ -94,6 +103,23 @@ class PantaJuego(tk.Frame):
         label = ttk.Label(self, text="Tabla de letras" , font=LETRA_NOR)
         label.place(x=550,y=100, anchor="w")
 
+
+        self.b_volver= ttk.Button(self , text="Volver" ,
+            command=lambda: controlador.mostrar_frame(MenuJuego))
+        self.b_volver.pack(ipadx=50,ipady=10,pady=5)
+        self.b_volver.place(x=400,y=550,anchor="s")
+
+        self.tabladebotones()
+
+        self.b2_volver= ttk.Button(self , text="Perdiste" ,
+            command=lambda: controlador.mostrar_frame(PantaDerrota))
+        self.b2_volver.pack(ipadx=50,ipady=10,pady=5)
+        self.b2_volver.place(x=400,y=550,anchor="s")
+        self.b2_volver.pi=self.b2_volver.place_info()
+        self.b2_volver.place_forget()
+    
+    def tabladebotones(self):
+        self.carga_txt()
         self.letra_bot(1)
         self.boton1= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
             command=lambda: self.letra_Incognita(1))
@@ -144,114 +170,108 @@ class PantaJuego(tk.Frame):
             command=lambda: self.letra_Incognita(10))
         self.boton10.place(x=600,y=400, anchor="w",width=50)
 
-        self.letra_bot(11)
-        self.boton11= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(11))
-        self.boton11.place(x=650,y=200, anchor="w",width=50)
 
-        self.letra_bot(12)
-        self.boton12= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(12))
-        self.boton12.place(x=700,y=200, anchor="w",width=50)
+        if self.dificultad=="medio":
+            self.letra_bot(11)
+            self.boton11= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(11))
+            self.boton11.place(x=650,y=200, anchor="w",width=50)
 
-        self.letra_bot(13)
-        self.boton13= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(13))
-        self.boton13.place(x=650,y=250, anchor="w",width=50)
+            self.letra_bot(12)
+            self.boton12= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(12))
+            self.boton12.place(x=700,y=200, anchor="w",width=50)
 
-        self.letra_bot(14)
-        self.boton14= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(14))
-        self.boton14.place(x=700,y=250, anchor="w",width=50)
+            self.letra_bot(13)
+            self.boton13= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(13))
+            self.boton13.place(x=650,y=250, anchor="w",width=50)
 
-        self.letra_bot(15)
-        self.boton15= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(15))
-        self.boton15.place(x=650,y=300, anchor="w",width=50)
+            self.letra_bot(14)
+            self.boton14= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(14))
+            self.boton14.place(x=700,y=250, anchor="w",width=50)
 
-        self.letra_bot(16)
-        self.boton16= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(16))
-        self.boton16.place(x=700,y=300, anchor="w",width=50)
+            self.letra_bot(15)
+            self.boton15= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(15))
+            self.boton15.place(x=650,y=300, anchor="w",width=50)
 
-        self.letra_bot(17)
-        self.boton17= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(17))
-        self.boton17.place(x=650,y=350, anchor="w",width=50)
+            self.letra_bot(16)
+            self.boton16= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(16))
+            self.boton16.place(x=700,y=300, anchor="w",width=50)
 
-        self.letra_bot(18)
-        self.boton18= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(18))
-        self.boton18.place(x=700,y=350, anchor="w",width=50)
+            self.letra_bot(17)
+            self.boton17= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(17))
+            self.boton17.place(x=650,y=350, anchor="w",width=50)
 
-        self.letra_bot(19)
-        self.boton19= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(19))
-        self.boton19.place(x=650,y=400, anchor="w",width=50)
+            self.letra_bot(18)
+            self.boton18= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(18))
+            self.boton18.place(x=700,y=350, anchor="w",width=50)
 
-        self.letra_bot(20)
-        self.boton20= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(20))
-        self.boton20.place(x=700,y=400, anchor="w",width=50)
+            self.letra_bot(19)
+            self.boton19= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(19))
+            self.boton19.place(x=650,y=400, anchor="w",width=50)
 
-        self.letra_bot(21)
-        self.boton21= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(21))
-        self.boton21.place(x=750,y=200, anchor="w",width=50)
+            self.letra_bot(20)
+            self.boton20= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                command=lambda: self.letra_Incognita(20))
+            self.boton20.place(x=700,y=400, anchor="w",width=50)
 
-        self.letra_bot(22)
-        self.boton22= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(22))
-        self.boton22.place(x=750,y=250, anchor="w",width=50)
+        
+            if self.dificultad=="dificil":
+                self.letra_bot(21)
+                self.boton21= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                    command=lambda: self.letra_Incognita(21))
+                self.boton21.place(x=750,y=200, anchor="w",width=50)
 
-        self.letra_bot(23)
-        self.boton23= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(23))
-        self.boton23.place(x=750,y=300, anchor="w",width=50)
+                self.letra_bot(22)
+                self.boton22= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                    command=lambda: self.letra_Incognita(22))
+                self.boton22.place(x=750,y=250, anchor="w",width=50)
 
-        self.letra_bot(24)
-        self.boton24= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(24))
-        self.boton24.place(x=750,y=350, anchor="w",width=50)
+                self.letra_bot(23)
+                self.boton23= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                    command=lambda: self.letra_Incognita(23))
+                self.boton23.place(x=750,y=300, anchor="w",width=50)
 
-        self.letra_bot(25)
-        self.boton25= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
-            command=lambda: self.letra_Incognita(25))
-        self.boton25.place(x=750,y=400, anchor="w",width=50)
+                self.letra_bot(24)
+                self.boton24= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                    command=lambda: self.letra_Incognita(24))
+                self.boton24.place(x=750,y=350, anchor="w",width=50)
 
-        self.b_volver= ttk.Button(self , text="Volver" ,
-            command=lambda: controlador.mostrar_frame(MenuJuego))
-        self.b_volver.pack(ipadx=50,ipady=10,pady=5)
-        self.b_volver.place(x=400,y=550,anchor="s")
+                self.letra_bot(25)
+                self.boton25= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
+                    command=lambda: self.letra_Incognita(25))
+                self.boton25.place(x=750,y=400, anchor="w",width=50)
 
         #############################################################3
 
-        self.incognita_guiones()
+            self.incognita_guiones()
 
-        self.incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
-        self.incognita.place(x=200,y=400)
+            self.incognita = tk.Label(self,text = self.palabra, font=LETRA_NOR)
+            self.incognita.place(x=200,y=400)
 
-        self.monigote = tk.PhotoImage(file="imagenes/horca.png")
-        self.canvas = tk.Label(self,image=self.monigote)
-        self.canvas.pack()
-        self.canvas.place(x=250,y=150)
+            self.monigote = tk.PhotoImage(file="imagenes/horca.png")
+            self.canvas = tk.Label(self,image=self.monigote)
+            self.canvas.pack()
+            self.canvas.place(x=250,y=150)
 
-        text_score = ttk.Label(self,text="Puntuacion: ",font=13)
-        text_score.pack()
-        text_score.place(x=350,y=500,anchor="s")
+            text_score = ttk.Label(self,text="Puntuacion: ",font=13)
+            text_score.pack()
+            text_score.place(x=350,y=500,anchor="s")
 
-        self.text_timer = tk.Label(self,text="",font=13)
-        self.text_timer.pack()
-        self.text_timer.place(x=420,y=500,anchor="s")
+            self.text_timer = tk.Label(self,text="",font=13)
+            self.text_timer.pack()
+            self.text_timer.place(x=420,y=500,anchor="s")
 
-        self.countdown(10)
+            self.countdown(10)
 
-        self.b2_volver= ttk.Button(self , text="Perdiste" ,
-            command=lambda: controlador.mostrar_frame(PantaDerrota))
-        self.b2_volver.pack(ipadx=50,ipady=10,pady=5)
-        self.b2_volver.place(x=400,y=550,anchor="s")
-        self.b2_volver.pi=self.b2_volver.place_info()
-        self.b2_volver.place_forget()
+    
 
         # FUNCIONES
         ###############################################################3
@@ -260,7 +280,16 @@ class PantaJuego(tk.Frame):
     def carga_txt(self):
 
         # Carga un palabra random desde ahorcado.txt
-        palabras = open('ahorcado_5.txt','r')
+        if self.dificultad=="facil":
+            textdificultad='ahorcado_5.txt'
+        
+        elif self.dificultad=="medio":
+            textdificultad='palabras_8_letras.txt'
+        
+        elif self.dificultad=="dificil":
+            textdificultad='plalabras_mas_de_8_letras.txt'
+        
+        palabras = open(textdificultad,'r')
         listPalabras = palabras.readlines()
         palabras.close()
         i = randint(0,30)
@@ -278,10 +307,15 @@ class PantaJuego(tk.Frame):
         self.list_word= copia_list+self.list_word
         shuffle(self.abc)
         cpt=0
-        while len(self.list_word)!=25:
+        if PantaJuego.dificultad == "medio":
+            cpt=20
+        elif PantaJuego.dificultad == "facil":
+            cpt=10
+        elif PantaJuego.dificultad=="dificil":
+            cpt=25
+        while len(self.list_word)!=cpt:
             saca_abc= self.abc.pop()
             if saca_abc not in self.list_word:
-                cpt+=1
                 self.list_word.append(saca_abc)
         shuffle(self.list_word)
 
@@ -306,6 +340,7 @@ class PantaJuego(tk.Frame):
         print(self.list_word)
         print(self.palabra_list)
         print(self.boton_dic)
+        print(self.palabra)
         if self.list_word[a-1] in self.palabra_list and self.boton_dic[a]==True:
 
             if a==1 and self.boton_dic[1]==True:
@@ -371,7 +406,7 @@ class PantaJuego(tk.Frame):
             elif a==13 and self.boton_dic[13]==True:
                 self.boton13.config(bg="green",disabledforeground="snow",relief="groove")
                 self.boton13.config(state="disable")
-                self.Cambio3De_Guio(a)
+                self.Cambio_De_Guio(a)
 
             elif a==14 and self.boton_dic[14]==True:
                 self.boton14.config(bg="green",disabledforeground="snow",relief="groove")
@@ -578,8 +613,16 @@ class PantaJuego(tk.Frame):
             sustiindex=cambio.pop(a-1)
             self.palabra[nuevaletraindex[0]]=sustiindex
             self.incognita.configure(text=(self.palabra),)
+        
+        acierto=mixer.Sound("sonido/Dink.wav")
+        acierto.play()
+        PantaJuego.mostrarvictoria()
 
     def actuliza_img(self):
+        
+    
+        error=mixer.Sound("sonido/PiPiPi.wav")
+        error.play()
         if self.conta_img==0:
             self.conta_img+=1
             self.monigote= tk.PhotoImage(file="imagenes/cabeza.png")
@@ -624,6 +667,24 @@ class PantaJuego(tk.Frame):
     def mostrarderrota(self):
         self.b2_volver.place(self.b2_volver.pi)
         self.b_volver.place_forget()
+        
+        mixer.music.load("sonido/derrota.mp3")
+        mixer.music.play()
+        messagebox.showinfo("Perdiste", "Has perdido gato")
+
+    def callback():
+        if messagebox.askokcancel("Salir", "¿Realmente desea salir?"):
+            app.destroy()
+
+    def mostrarvictoria():
+        if PantaJuego.palabra_list == PantaJuego.palabra:
+            messagebox.showinfo("Salir", "¿Realmente desea salir?")
+            lambda: controlador.mostrar_frame(PantaDerrota)
+
+    def muca():
+        mixer.init()
+        mixer.music.load("sonido/theme.mp3")
+        mixer.music.play(-1)
 
 class PantaPuntua(tk.Frame):
 
@@ -649,24 +710,32 @@ class PantaDificult(tk.Frame):
         label = ttk.Label(self, text="DIFICULTADES" , font=LETRA_GRA2)
         label.pack(pady=50)
 
-        facil= ttk.Button(self,text="FACIL")
+        facil= ttk.Button(self,text="FACIL",command=lambda:self.cambiadificultad(1))
         facil.pack(pady=20,ipady=20,ipadx=40)
 
-        normal= ttk.Button(self,text="NORMAL")
+        normal= ttk.Button(self,text="NORMAL",command=lambda:self.cambiadificultad(2))
         normal.pack(pady=20,ipady=20,ipadx=40)
 
-        dificil= ttk.Button(self,text="DIFICIL")
+        dificil= ttk.Button(self,text="DIFICIL",command=lambda:self.cambiadificultad(3))
         dificil.pack(pady=20,ipady=20,ipadx=40)
 
         b_volver= ttk.Button(self , text="Volver" ,
             command=lambda: controlador.mostrar_frame(MenuJuego))
         b_volver.pack(ipadx=50,ipady=10,pady=5)
         b_volver.place(x=400,y=550,anchor="s")
+    
+    def cambiadificultad(self,cont):
+        if cont == 1:
+            PantaJuego.dificultad="facil"
+        elif cont == 2:
+            PantaJuego.dificultad="medio"
+        elif cont == 3:
+            PantaJuego.dificultad="dificil"
 
 class ConfirmarSalida(tk.Frame):
         def __init__(self, padre, controlador):
             tk.Frame.__init__(self,padre)
-            label = ttk.Label(self, text="¿ESTA SEGURO DE QUE DESEA SALIR?" , font=LETRA_GRA2)
+            label = ttk.Label(self, text="¿ESTA SEGURO QUE DESEA SALIR?" , font=LETRA_GRA2)
             label.pack(pady=50)
             b_si=tk.Button(self , text="SI" , command= quit,font=LETRA_GRA2,width=5)
             b_si.pack(pady=50)
@@ -680,15 +749,42 @@ class PantaDerrota(tk.Frame):
         label = ttk.Label(self, text="DERROTA" , font=LETRA_GRA2)
         label.pack(pady=50)
 
-        label2 = ttk.Label(self, text="DERROTA" , font=LETRA_NOR)
-        label2.pack()
+        self.canvas=tk.Canvas(self,width=400,height=300)
+        self.canvas.pack()
+        self.secuencia = [ImageTk.PhotoImage(img) for img in ImageSequence.Iterator(Image.open(r"imagenes/082.gif"))]
+        self.image = self.canvas.create_image(200,150,image=self.secuencia[0])
+        
+        self.animate(1)
+        
+    def animate(self,a):
+        self.canvas.itemconfig(self.image, image=self.secuencia[a])
+        self.after(100,lambda: self.animate((a+1) % len(self.secuencia)))
 
-        label3 = ttk.Label(self, text="DERROTA" , font=LETRA_NOR)
-        label3.pack()
+class PantaVictoria(tk.Frame):
+    
+    def __init__(self, padre, controlador):
+        tk.Frame.__init__(self,padre)
+        # gif1 = tk.PhotoImage(file = 'imagenes/victoria.gif',format="gif -index 2")
+        self.canvas=tk.Canvas(self,width=800,height=600)
+        self.canvas.pack()
+        self.secuencia = [ImageTk.PhotoImage(img) for img in ImageSequence.Iterator(Image.open(r"imagenes/victoria.gif"))]
+        self.image = self.canvas.create_image(400,300,image=self.secuencia[0])
+        
+        self.animate(1)
+        
+    def animate(self,a):
+        self.canvas.itemconfig(self.image, image=self.secuencia[a])
+        self.after(250,lambda: self.animate((a+1) % len(self.secuencia)))
 
+
+        
+        
+        
 
 app=Ahorcado()
 app.geometry("800x600")
 app.resizable(False, False)
+app.protocol("WM_DELETE_WINDOW", PantaJuego.callback)
+
 
 app.mainloop()
