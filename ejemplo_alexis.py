@@ -109,6 +109,7 @@ class PantaJuego(tk.Frame):
             command=lambda: controlador.mostrar_frame(MenuJuego))
         self.b_volver.pack(ipadx=50,ipady=10,pady=5)
         self.b_volver.place(x=400,y=550,anchor="s")
+        self.b_volver.pi=self.b_volver.place_info()
 
         self.b_inciar= tk.Button(self , text="Inciar",font=LETRA_NOR ,
             command=lambda: self.tabladebotones())
@@ -116,14 +117,14 @@ class PantaJuego(tk.Frame):
         self.b_inciar.place(x=400,y=300,anchor="s",width=100,height=50)
 
         self.b2_volver= ttk.Button(self , text="Perdiste" ,
-            command=lambda: controlador.mostrar_frame(PantaDerrota))
+            command=lambda: [controlador.mostrar_frame(PantaDerrota),self.olvidarboton()])
         self.b2_volver.pack(ipadx=50,ipady=10,pady=5)
         self.b2_volver.place(x=400,y=550,anchor="s")
         self.b2_volver.pi=self.b2_volver.place_info()
         self.b2_volver.place_forget()
 
         self.b3_volver= ttk.Button(self , text="Ganaste" ,
-            command=lambda: controlador.mostrar_frame(PantaVictoria))
+            command=lambda: [controlador.mostrar_frame(PantaVictoria),self.olvidarboton()])
         self.b3_volver.pack(ipadx=50,ipady=10,pady=5)
         self.b3_volver.place(x=400,y=550,anchor="s")
         self.b3_volver.pi=self.b3_volver.place_info()
@@ -275,6 +276,7 @@ class PantaJuego(tk.Frame):
 
             
                 if self.dificultad=="dificil":
+
                     self.letra_bot(21)
                     self.boton21= tk.Button(self , text=self.text_bot ,font=("ComicSansMS",16, "bold"),
                         command=lambda: self.letra_Incognita(21))
@@ -323,17 +325,17 @@ class PantaJuego(tk.Frame):
         # Carga un palabra random desde ahorcado.txt
         if self.dificultad=="facil":
             textdificultad='ahorcado_5.txt'
-        
+            i = randint(0,30)
+            
         elif self.dificultad=="medio":
             textdificultad='palabras_8_letras.txt'
-        
+            i = randint(0,89)
         elif self.dificultad=="dificil":
             textdificultad='plalabras_mas_de_8_letras.txt'
-        
+            i = randint(0,24)
         palabras = open(textdificultad,'r')
         listPalabras = palabras.readlines()
         palabras.close()
-        i = randint(0,30)
         self.palabra_sg = listPalabras[i]
 
         # transforma la palabra en lista y la guarda en palabra_list
@@ -739,6 +741,8 @@ class PantaJuego(tk.Frame):
             self.b3_volver.place(self.b3_volver.pi)
             self.b_volver.place_forget()
             self.cancel()
+            mixer.music.load("sonido/win.mp3")
+            mixer.music.play()
             if self.dificultad=="facil" or self.dificultad=="medio" or self.dificultad=="dificil":
                 self.boton1.config(state="disable")
                 self.boton2.config(state="disable")
@@ -837,6 +841,11 @@ class PantaJuego(tk.Frame):
     def callback():
         if messagebox.askokcancel("Salir", "¿Realmente desea salir?"):
             app.destroy()
+
+    def olvidarboton(self):
+        self.b2_volver.place_forget()
+        self.b3_volver.place_forget()
+        self.b_volver.place(self.b_volver.pi)
 
 
 
