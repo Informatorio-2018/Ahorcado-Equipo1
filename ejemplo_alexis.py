@@ -858,21 +858,38 @@ class PantaPuntua(tk.Frame):
         label = ttk.Label(self, text="PUNTUACIONES" , font=LETRA_GRA2)
         label.pack(pady=50)
 
-
-        for i in range(10):
-            tk.Label(self,text=str(self.puntajes),font=20).pack(pady=5)
-
+        self.leerpuntajes()
+        self.mostrar()
+        self.actualiza()
 
         b_volver= ttk.Button(self , text="Volver" ,
-            command=lambda: controlador.mostrar_frame(MenuJuego))
+            command=lambda: [controlador.mostrar_frame(MenuJuego),print(self.puntajes)])
         b_volver.pack(ipadx=50,ipady=10,pady=5)
         b_volver.place(x=400,y=550,anchor="s")
 
-        def leerpuntajes(self):
-            puntajes = open(textdificultad,'r')
-            listpuntajes = puntajes.readlines()
-            puntajes.close()
-            self.puntajes=listpuntajes
+        # b_actualiza= ttk.Button(self , text="Actualizar" ,
+        #     command=lambda: self.actualiza())
+        # b_actualiza.pack(ipadx=50,ipady=10,pady=5)
+        # b_actualiza.place(x=400,y=500,anchor="s")
+
+    def mostrar(self):
+        for i in range(len(self.puntajes)):
+            self.nombre=tk.Label(self,text=str(self.puntajes[i]),font=20)
+            self.nombre.pack()
+
+    def leerpuntajes(self):
+        puntajes = open("puntajes.txt",'r')
+        listpuntajes = puntajes.readlines()
+        puntajes.close()
+        self.puntajes=listpuntajes
+        self.puntajes.sort(reverse=True)
+
+    def actualiza(self):
+        self.leerpuntajes()
+        self.after(100,self.actualiza)
+        for i in range(len(self.puntajes)):
+            self.nombre.config(text=str(self.puntajes[i]),font=20)
+
 
 class PantaDificult(tk.Frame):
 
@@ -908,19 +925,67 @@ class PantaDerrota(tk.Frame):
     def __init__(self, padre, controlador):
         tk.Frame.__init__(self,padre)
         label = ttk.Label(self, text="DERROTA" , font=LETRA_GRA2)
-        label.pack(pady=50)
+        label.pack()
 
-        self.canvas=tk.Canvas(self,width=400,height=300)
+        self.canvas=tk.Canvas(self,width=310,height=330)
         self.canvas.pack()
         self.secuencia = [ImageTk.PhotoImage(img) for img in ImageSequence.Iterator(Image.open(r"imagenes/082.gif"))]
-        self.image = self.canvas.create_image(200,150,image=self.secuencia[0])
+        self.image = self.canvas.create_image(155,165,image=self.secuencia[0])
+
+        self.puntuacion = ttk.Label(self, text="%d" % PantaJuego.remaining , font=LETRA_NOR)
+        self.puntuacion.pack()
+        self.puntuacion.place(x=450,y=450,anchor="e")
+
+        label = ttk.Label(self, text="Tu nombre" , font=LETRA_NOR)
+        label.pack()
+        label.place(x=410,y=400,anchor="e")
+
+        label1 = ttk.Label(self, text="Tus puntos:" , font=LETRA_NOR)
+        label1.pack()
+        label1.place(x=410,y=450,anchor="e")
         
         self.animate(1)
+
+        self.entrada_nombre = tk.Entry(self)
+        self.entrada_nombre.pack()
+        self.entrada_nombre.place(x=410,y=400,anchor="w")
+        self.entrada_nombre.focus_set()
+
+
+        self.b_entrada= ttk.Button(self , text="Guardar" ,
+            command=lambda: [self.guarda_puntaje(), controlador.mostrar_frame(PantaPuntua)])
+        self.b_entrada.pack()
+        self.b_entrada.place(x=400,y=500,anchor="s")
 
         b_volver= ttk.Button(self , text="Volver" ,
             command=lambda: controlador.mostrar_frame(MenuJuego))
         b_volver.pack(ipadx=50,ipady=10,pady=5)
         b_volver.place(x=400,y=550,anchor="s")
+        
+        self.actualizapunatuacion()
+    
+        b_volver= ttk.Button(self , text="Volver" ,
+            command=lambda: controlador.mostrar_frame(MenuJuego))
+        b_volver.pack(ipadx=50,ipady=10,pady=5)
+        b_volver.place(x=400,y=550,anchor="s")
+
+    def guarda_puntaje(self):
+        try:
+            baseda=open("puntajes.txt",'r')
+            baseda.close()
+        except IOError:
+            baseda=open("puntajes.txt",'w')
+            baseda.close()
+
+        baseda=open("puntajes.txt",'a')
+        baseda.write(str(PantaJuego.remaining)+"---"+self.entrada_nombre.get()+"\n")
+        baseda.close()
+
+    def actualizapunatuacion(self,cont=None):
+        if cont==None:
+            self.puntuacion.configure(text="%d" % PantaJuego.remaining,font=LETRA_NOR)
+            self.after(1000, self.actualizapunatuacion)
+
         
     def animate(self,a):
         self.canvas.itemconfig(self.image, image=self.secuencia[a])
@@ -940,7 +1005,7 @@ class PantaVictoria(tk.Frame):
         label.pack()
         label.place(x=410,y=400,anchor="e")
 
-        label1 = ttk.Label(self, text="Tus puntos" , font=LETRA_NOR)
+        label1 = ttk.Label(self, text="Tus puntos:" , font=LETRA_NOR)
         label1.pack()
         label1.place(x=410,y=450,anchor="e")
 
@@ -978,7 +1043,7 @@ class PantaVictoria(tk.Frame):
             baseda.close()
 
         baseda=open("puntajes.txt",'a')
-        baseda.write(self.entrada_nombre.get()+"---"+str(PantaJuego.remaining)+"\n")
+        baseda.write(str(PantaJuego.remaining)+"---"+self.entrada_nombre.get()+"\n")
         baseda.close()
         
     def animate(self,a):
