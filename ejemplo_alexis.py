@@ -157,6 +157,7 @@ class PantaJuego(tk.Frame):
         self.conta=0
         self.conta_img=0
         self.conta_victoria=0
+        self.puntos=0
 
 
         self.b_inciar.place_forget()
@@ -167,7 +168,9 @@ class PantaJuego(tk.Frame):
 
         self.remaining=0
         
-        self.countdown(100)
+        self.asignar_puntos()
+
+        self.countdown(self.puntos)
 
         self.carga_txt()
 
@@ -812,6 +815,7 @@ class PantaJuego(tk.Frame):
 
         if self.remaining <= 0:
             self.text_timer.configure(text="Perdiste")
+            self.mostrarderrota()
         else:
             self.text_timer.configure(text="%d" % self.remaining)
             self.remaining = self.remaining - 1
@@ -822,6 +826,14 @@ class PantaJuego(tk.Frame):
             self.after_cancel(self._job)
             self._job = None
             PantaJuego.remaining=self.remaining
+
+    def asignar_puntos(self):
+        if self.dificultad=="facil":
+            self.puntos=120
+        elif self.dificultad=="medio":
+            self.puntos=240
+        elif self.dificultad=="dificil":
+            self.puntos=300
 
     def muca():
         mixer.init()
@@ -858,15 +870,21 @@ class PantaPuntua(tk.Frame):
         label = ttk.Label(self, text="PUNTUACIONES" , font=LETRA_GRA2)
         label.pack(pady=50)
 
-        self.leerpuntajes()
-        self.mostrar()
-        self.actualiza()
+
+        self.cajadepuntos=tk.Listbox(self,font=("Verdana",20,"bold"),width=30,relief="sunken",bg="lightblue",bd=5)
+        self.cajadepuntos.pack()
+
+        for i in self.puntajes:
+            self.cajadepuntos.insert("end",i)
 
         b_volver= ttk.Button(self , text="Volver" ,
             command=lambda: [controlador.mostrar_frame(MenuJuego),print(self.puntajes)])
         b_volver.pack(ipadx=50,ipady=10,pady=5)
         b_volver.place(x=400,y=550,anchor="s")
 
+        self.leerpuntajes()
+        self.actualiza()
+        
         # b_actualiza= ttk.Button(self , text="Actualizar" ,
         #     command=lambda: self.actualiza())
         # b_actualiza.pack(ipadx=50,ipady=10,pady=5)
@@ -886,9 +904,12 @@ class PantaPuntua(tk.Frame):
 
     def actualiza(self):
         self.leerpuntajes()
+        # for i in range(len(self.puntajes)):
+        #     self.nombre.config(text=str(self.puntajes[i]),font=20)
+        self.cajadepuntos.delete(0,"end")
+        for i in self.puntajes:
+            self.cajadepuntos.insert("end",i)
         self.after(100,self.actualiza)
-        for i in range(len(self.puntajes)):
-            self.nombre.config(text=str(self.puntajes[i]),font=20)
 
 
 class PantaDificult(tk.Frame):
