@@ -106,7 +106,7 @@ class PantaJuego(tk.Frame):
 
 
         self.b_volver= ttk.Button(self , text="Volver" ,
-            command=lambda: controlador.mostrar_frame(MenuJuego))
+            command=lambda: [controlador.mostrar_frame(MenuJuego),self.destruir()])
         self.b_volver.pack(ipadx=50,ipady=10,pady=5)
         self.b_volver.place(x=400,y=550,anchor="s")
         self.b_volver.pi=self.b_volver.place_info()
@@ -115,16 +115,17 @@ class PantaJuego(tk.Frame):
             command=lambda: self.tabladebotones())
         self.b_inciar.pack(pady=5)
         self.b_inciar.place(x=400,y=300,anchor="s",width=100,height=50)
+        self.b_inciar.pi=self.b_inciar.place_info()
 
         self.b2_volver= ttk.Button(self , text="Perdiste" ,
-            command=lambda: [controlador.mostrar_frame(PantaDerrota),self.olvidarboton()])
+            command=lambda: [controlador.mostrar_frame(PantaDerrota),self.olvidarboton(),self.destruir()])
         self.b2_volver.pack(ipadx=50,ipady=10,pady=5)
         self.b2_volver.place(x=400,y=550,anchor="s")
         self.b2_volver.pi=self.b2_volver.place_info()
         self.b2_volver.place_forget()
 
         self.b3_volver= ttk.Button(self , text="Ganaste" ,
-            command=lambda: [controlador.mostrar_frame(PantaVictoria),self.olvidarboton()])
+            command=lambda: [controlador.mostrar_frame(PantaVictoria),self.olvidarboton(),self.destruir()])
         self.b3_volver.pack(ipadx=50,ipady=10,pady=5)
         self.b3_volver.place(x=400,y=550,anchor="s")
         self.b3_volver.pi=self.b3_volver.place_info()
@@ -328,18 +329,18 @@ class PantaJuego(tk.Frame):
         # Carga un palabra random desde ahorcado.txt
         if self.dificultad=="facil":
             textdificultad='ahorcado_5.txt'
-            i = randint(0,30)
-            
+
         elif self.dificultad=="medio":
             textdificultad='palabras_8_letras.txt'
-            i = randint(0,89)
+
         elif self.dificultad=="dificil":
             textdificultad='plalabras_mas_de_8_letras.txt'
-            i = randint(0,24)
+            
+        
         palabras = open(textdificultad,'r')
         listPalabras = palabras.readlines()
         palabras.close()
-        self.palabra_sg = listPalabras[i]
+        self.palabra_sg = listPalabras[(randint(0,((len(listPalabras)-1))))]
 
         # transforma la palabra en lista y la guarda en palabra_list
         # y la copia
@@ -697,16 +698,22 @@ class PantaJuego(tk.Frame):
             self.monigote= tk.PhotoImage(file="imagenes/murio.png")
             self.canvas.configure(image=self.monigote)
             self.canvas.image=self.monigote
+            
+            self.remaining=self.remaining-100
+            if self.remaining<0:
+                self.remaining=10
+
             self.mostrarderrota()
 
 
     def mostrarderrota(self):
         self.cancel()
+        self.incognita.configure(text=(self.palabra_list)
         self.b2_volver.place(self.b2_volver.pi)
         self.b_volver.place_forget()
-        
         mixer.music.load("sonido/derrota.mp3")
         mixer.music.play()
+
         if self.dificultad=="facil" or self.dificultad=="medio" or self.dificultad=="dificil":
                 self.boton1.config(state="disable")
                 self.boton2.config(state="disable")
@@ -777,10 +784,15 @@ class PantaJuego(tk.Frame):
 
 
     def destruir(self):
-        self.cancel()
-        self.canvas.destroy()
-        self.incognita.destroy()
+        self.b_inciar.place(self.b_inciar.pi)
         try:
+            self.cancel()
+        except ValueError:
+            pass
+        
+        try:
+            self.canvas.destroy()
+            self.incognita.destroy()
             self.boton1.destroy()
             self.boton2.destroy()
             self.boton3.destroy()
@@ -870,47 +882,42 @@ class PantaPuntua(tk.Frame):
         label = ttk.Label(self, text="PUNTUACIONES" , font=LETRA_GRA2)
         label.pack(pady=50)
 
+        self.lista=[]
 
-        self.cajadepuntos=tk.Listbox(self,font=("Verdana",20,"bold"),width=30,relief="sunken",bg="lightblue",bd=5)
+        self.cajadepuntos=tk.Listbox(self,font=("ComicSansMS",20,"bold"),width=30,relief="sunken",bg="lightblue",bd=5)
         self.cajadepuntos.pack()
 
-        for i in self.puntajes:
-            self.cajadepuntos.insert("end",i)
 
         b_volver= ttk.Button(self , text="Volver" ,
-            command=lambda: [controlador.mostrar_frame(MenuJuego),print(self.puntajes)])
+            command=lambda: [controlador.mostrar_frame(MenuJuego),print(self.lista)])
         b_volver.pack(ipadx=50,ipady=10,pady=5)
         b_volver.place(x=400,y=550,anchor="s")
 
         self.leerpuntajes()
         self.actualiza()
         
-        # b_actualiza= ttk.Button(self , text="Actualizar" ,
-        #     command=lambda: self.actualiza())
-        # b_actualiza.pack(ipadx=50,ipady=10,pady=5)
-        # b_actualiza.place(x=400,y=500,anchor="s")
 
-    def mostrar(self):
-        for i in range(len(self.puntajes)):
-            self.nombre=tk.Label(self,text=str(self.puntajes[i]),font=20)
-            self.nombre.pack()
 
     def leerpuntajes(self):
-        puntajes = open("puntajes.txt",'r')
-        listpuntajes = puntajes.readlines()
-        puntajes.close()
-        self.puntajes=listpuntajes
-        self.puntajes.sort(reverse=True)
+        self.puntajes = []
+        with open("puntajes.txt") as f:
+            for line in f:
+                score, name = line.split('---')
+                score = int(score)
+                self.puntajes.append((name[0:3],("-"*20),score))
+
+        self.puntajes.sort(key=lambda s: s[2],reverse=True)
+
 
     def actualiza(self):
+        self.lista=[]
         self.leerpuntajes()
-        # for i in range(len(self.puntajes)):
-        #     self.nombre.config(text=str(self.puntajes[i]),font=20)
+        for i in range(10):
+            self.lista.append((i+1,")_",self.puntajes[i]))
         self.cajadepuntos.delete(0,"end")
-        for i in self.puntajes:
+        for i in self.lista:
             self.cajadepuntos.insert("end",i)
         self.after(100,self.actualiza)
-
 
 class PantaDificult(tk.Frame):
 
@@ -919,13 +926,13 @@ class PantaDificult(tk.Frame):
         label = ttk.Label(self, text="DIFICULTADES" , font=LETRA_GRA2)
         label.pack(pady=50)
 
-        facil= ttk.Button(self,text="FACIL",command=lambda:self.cambiadificultad(1))
+        facil= ttk.Button(self,text="FACIL",command=lambda:[controlador.mostrar_frame2(PantaJuego),self.cambiadificultad(1)])
         facil.pack(pady=20,ipady=20,ipadx=40)
 
-        normal= ttk.Button(self,text="NORMAL",command=lambda:self.cambiadificultad(2))
+        normal= ttk.Button(self,text="NORMAL",command=lambda:[controlador.mostrar_frame2(PantaJuego),self.cambiadificultad(2)])
         normal.pack(pady=20,ipady=20,ipadx=40)
 
-        dificil= ttk.Button(self,text="DIFICIL",command=lambda:self.cambiadificultad(3))
+        dificil= ttk.Button(self,text="DIFICIL",command=lambda:[controlador.mostrar_frame2(PantaJuego),self.cambiadificultad(3)])
         dificil.pack(pady=20,ipady=20,ipadx=40)
 
         b_volver= ttk.Button(self , text="Volver" ,
@@ -955,7 +962,7 @@ class PantaDerrota(tk.Frame):
 
         self.puntuacion = ttk.Label(self, text="%d" % PantaJuego.remaining , font=LETRA_NOR)
         self.puntuacion.pack()
-        self.puntuacion.place(x=450,y=450,anchor="e")
+        self.puntuacion.place(x=480,y=450,anchor="e")
 
         label = ttk.Label(self, text="Tu nombre" , font=LETRA_NOR)
         label.pack()
@@ -1033,7 +1040,7 @@ class PantaVictoria(tk.Frame):
 
         self.puntuacion = ttk.Label(self, text="%d" % PantaJuego.remaining , font=LETRA_NOR)
         self.puntuacion.pack()
-        self.puntuacion.place(x=450,y=450,anchor="e")
+        self.puntuacion.place(x=480,y=450,anchor="e")
         
         self.animate(1)
 
