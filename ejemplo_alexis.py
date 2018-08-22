@@ -675,24 +675,48 @@ class PantaJuego(tk.Frame):
             self.monigote= tk.PhotoImage(file="imagenes/cabeza.png")
             self.canvas.configure(image=self.monigote)
             self.canvas.image=self.monigote
+            if self.dificultad=="facil":
+                self.remaining=self.remaining-10
+            elif self.dificultad=='medio':
+                self.remaining=self.remaining-15
+            else:
+                self.remaining=self.remaining-20
 
         elif self.conta_img==1:
             self.conta_img+=1
             self.monigote= tk.PhotoImage(file="imagenes/cuerpo.png")
             self.canvas.configure(image=self.monigote)
             self.canvas.image=self.monigote
+            if self.dificultad=="facil":
+                self.remaining=self.remaining-10
+            elif self.dificultad=='medio':
+                self.remaining=self.remaining-15
+            else:
+                self.remaining=self.remaining-20
 
         elif self.conta_img==2:
             self.monigote= tk.PhotoImage(file="imagenes/piernas.png")
             self.canvas.configure(image=self.monigote)
             self.canvas.image=self.monigote
             self.conta_img+=1
+            if self.dificultad=="facil":
+                self.remaining=self.remaining-10
+            elif self.dificultad=='medio':
+                self.remaining=self.remaining-15
+            else:
+                self.remaining=self.remaining-20
 
         elif self.conta_img==3:
             self.monigote= tk.PhotoImage(file="imagenes/extremidades.png")
             self.canvas.configure(image=self.monigote)
             self.canvas.image=self.monigote
             self.conta_img+=1
+            if self.dificultad=="facil":
+                self.remaining=self.remaining-10
+            elif self.dificultad=='medio':
+                self.remaining=self.remaining-15
+            else:
+                self.remaining=self.remaining-20
 
         elif self.conta_img==4:
             self.monigote= tk.PhotoImage(file="imagenes/murio.png")
@@ -708,7 +732,7 @@ class PantaJuego(tk.Frame):
 
     def mostrarderrota(self):
         self.cancel()
-        self.incognita.configure(text=(self.palabra_list)
+        self.incognita.configure(text=(self.palabra_list))
         self.b2_volver.place(self.b2_volver.pi)
         self.b_volver.place_forget()
         mixer.music.load("sonido/derrota.mp3")
@@ -748,6 +772,7 @@ class PantaJuego(tk.Frame):
     def mostrarvictoria(self):
         self.conta_victoria+=1
         if self.conta_victoria == len(self.palabra_list):
+            self.remaining=self.remaining+100
             self.b3_volver.place(self.b3_volver.pi)
             self.b_volver.place_forget()
             self.cancel()
